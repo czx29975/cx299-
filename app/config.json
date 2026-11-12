@@ -1,0 +1,19 @@
+{
+  "app": {
+    "name": "安语",
+    "subtitle": "居家养老语音助手"
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "http_port": 8080,
+    "https_port": 8443,
+    "db_path": "data/anyu.db"
+  },
+  "llm": {
+    "base_url": "https://api.deepseek.com/v1",
+    "api_key": "",
+    "model": "deepseek-chat",
+    "temperature": 0.3,
+    "timeout": 25
+  }
+}

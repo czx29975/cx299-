@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>了解方案 · 安语 AI 语音养老服务助手</title>
+<meta name="description" content="以语音为唯一主入口的居家养老 AI 助手：不识字、不点屏也能用；疑似跌倒先确认再升级，三级联动分钟级响应；用药提醒做到确认闭环。">
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-voice" viewBox="0 0 24 24"><path d="M4 10v4M8 6.5v11M12 3.5v17M16 7v10M20 10v4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-2.9 7.4-7 9-4.1-1.6-7-4.6-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3h3L11 7.5 9 9a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8.5 10V8a3.5 3.5 0 0 1 7 0v2"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19a4 4 0 0 1-4 4h-2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M17.5 20a5 5 0 0 0-2.2-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0"/><path d="M6.5 12.5a8.5 8.5 0 0 1 11 0"/><path d="M10 16a4 4 0 0 1 4 0"/><circle cx="12" cy="19.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11v2"/><path d="M6.5 11v2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h7l5 5v13H6z"/><path d="M13 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 13h10v8H7z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M4 9h16"/><path d="M12 9v5"/><path d="M8 21l4-7 4 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v4"/><circle cx="12" cy="16.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M8 7H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h13"/><path d="M9 4h4l2 3h4a1 1 0 0 1 1 1v7"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-4M12 16V7M16 16v-6"/></symbol>
+</svg>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top" aria-label="安语 · AI 语音养老助手 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>AI 语音养老助手</small></span>
+    </a>
+
+    <nav class="nav" aria-label="主导航">
+      <a href="#why">为什么</a>
+      <a href="#day">一天</a>
+      <a href="#demo">对话</a>
+      <a href="#safety">应急</a>
+      <a href="#modules">十大模块</a>
+      <a href="#roadmap">路线图</a>
+    </nav>
+
+    <div class="topbar-actions">
+      <div class="a11y">
+        <button class="a11y-btn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel" aria-label="适老化显示设置">
+          <svg class="ico" aria-hidden="true"><use href="#i-access"/></svg><span>适老化</span>
+        </button>
+        <div class="a11y-panel" id="a11yPanel" hidden>
+          <p class="a11y-title">显示设置</p>
+          <label class="switch"><span>大字模式<small>正文放大，间距更松</small></span><input type="checkbox" id="seniorToggle"><i aria-hidden="true"></i></label>
+          <label class="switch"><span>高对比<small>纯黑白，边框更清楚</small></span><input type="checkbox" id="contrastToggle"><i aria-hidden="true"></i></label>
+          <p class="a11y-note">设置会保存在本机。这个开关本身，也是方案里“老人可以不学就会用”的一次演示。</p>
+        </div>
+      </div>
+      <a class="btn btn-primary btn-sm app-link" href="index.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-voice"/></svg>开始体验
+      </a>
+      <a class="btn btn-ghost btn-sm doc-link" href="docs.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>设计方案
+      </a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="打开菜单">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="#why">为什么需要它</a>
+    <a href="#day">老人真实的一天</a>
+    <a href="#demo">听它怎么说话</a>
+    <a href="#safety">出事的时候</a>
+    <a href="#health">按时吃药</a>
+    <a href="#family">有人惦记</a>
+    <a href="#modules">十大功能模块</a>
+    <a href="#design">原则与边界</a>
+    <a href="#tech">技术与可靠性</a>
+    <a href="#roadmap">路线图与指标</a>
+    <a href="#trust">隐私与合规</a>
+    <a class="btn btn-primary btn-block" href="index.html">开始体验</a>
+    <a class="btn btn-ghost btn-block" href="docs.html">打开完整设计方案</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ========== Hero ========== -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">居家养老 · AI 语音助手</p>
+        <h1>叫得应，叫得来人，<br><em>按时吃药</em>，有人惦记。</h1>
+        <p class="hero-lead">以语音为唯一主入口的居家养老助手。不识字、不点屏、不记指令，开口就能用；出事时，它先问一声，再叫人。不是又一台智能音箱，而是一张有人接得住的安全网。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="index.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-voice"/></svg>开始体验
+          </a>
+          <a class="btn btn-ghost" href="docs.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>打开设计方案
+          </a>
+        </div>
+        <ul class="hero-badges">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>无需 App，无需学习</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>断网也能救命</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>先把误报管住</li>
+        </ul>
+      </div>
+
+      <div class="stage" aria-hidden="false">
+        <div class="device">
+          <div class="device-screen">
+            <div class="device-top">
+              <span class="device-date">11 月 10 日 · 周二</span>
+              <span class="device-weather">晴 18°</span>
+            </div>
+            <div class="device-clock">08:00</div>
+            <p class="device-greet">王阿姨，早上好</p>
+            <div class="device-remind">
+              <span class="dot-live" aria-hidden="true"></span>
+              <div><strong>该吃降压药了</strong><small>1 片 · 饭后 · 餐桌左边第二格</small></div>
+              <span class="device-state">待确认</span>
+            </div>
+            <div class="wave" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="device-say">“药盒在餐桌左边第二个格子，吃完跟我说一声‘吃过了’。”</div>
+            <div class="device-actions" aria-hidden="true">
+              <span>语音</span><span>用药</span><span>家人</span><span class="sos">求助</span>
+            </div>
+          </div>
+        </div>
+        <span class="float-chip chip-a"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><strong>已确认</strong> 08:07</span>
+        <span class="float-chip chip-b"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg>家属端已同步</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <dl class="stats">
+        <div class="stat"><dt>3.23<span>亿</span></dt><dd>全国 60 岁及以上人口<br>（2025 年末）</dd></div>
+        <div class="stat"><dt>≤30<span>秒</span></dt><dd>SOS 触发到第一通电话<br>接通</dd></div>
+        <div class="stat"><dt>3<span>级</span></dt><dd>家属 → 社区 → 120<br>逐层升级</dd></div>
+        <div class="stat"><dt>≤5<span>%</span></dt><dd>设备弃用率目标<br>本方案第一指标</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========== 01 为什么 ========== -->
+  <section class="sec" id="why">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">01 · 为什么需要它</p>
+        <h2>养老设备最常见的失败，<br>不是功能太少，而是<em>老人不用</em>。</h2>
+        <p class="sec-lead">独居、空巢、慢病共存，靠子女和社区的人力很难全天覆盖。但把摄像头、手环、App 一股脑塞给老人，往往换来一句“别给我装这些”，然后设备被束之高阁。</p>
+      </div>
+
+      <div class="pain-grid">
+        <article class="pain reveal" data-delay="1">
+          <p class="p-no">不会用</p>
+          <h3>多一步操作，就多一次放弃</h3>
+          <p>记不住菜单、看不清小字、验证码输不对。对老人来说，语音不是“更方便的入口”，而是唯一不需要学习的界面。</p>
+        </article>
+        <article class="pain reveal" data-delay="2">
+          <p class="p-no">不愿用</p>
+          <h3>被当成“被看管的人”</h3>
+          <p>外观像医疗器械、话术像监督、家属随时能看——尊严感一旦受损，老人会用“我不用”把关心挡在门外。</p>
+        </article>
+        <article class="pain reveal" data-delay="3">
+          <p class="p-no">不敢用</p>
+          <h3>用隐私换来的不是安心</h3>
+          <p>摄像头对着客厅，录音不知道去了哪。方案默认不采影像、雷达不成像、授权逐项可控，老人才敢让它待在屋里。</p>
+        </article>
+        <article class="pain reveal">
+          <p class="p-no">用不上</p>
+          <h3>提醒响了，药还是没吃</h3>
+          <p>能聊天却叫不来人，会报时却办不成事。每个意图都必须落到具体动作和语音回执，否则只是一场空响。</p>
+        </article>
+      </div>
+
+      <blockquote class="pullquote reveal">
+        付费的是子女，使用的是老人。任何功能都要同时回答“老人愿意用吗”和“子女愿意买吗”，而前者是前提——老人不用，其余价值全部归零。
+        <small>设计原则 · 付费方与使用方分离</small>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ========== 02 一天 ========== -->
+  <section class="sec sec-alt" id="day">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">02 · 真实的一天</p>
+        <h2>从 7:30 到凌晨 2:00，<br>它知道什么时候该开口，什么时候该闭嘴。</h2>
+        <p class="sec-lead">陪伴不是“话越多越好”，而是“可预期”。固定时间的问候，比全天随时搭话更容易被接受，也更不容易被视为打扰。</p>
+      </div>
+
+      <div class="day-wrap">
+        <ol class="day-list">
+          <li class="day-item reveal">
+            <span class="day-time">07:30</span>
+            <div class="day-body">
+              <h3>起床</h3>
+              <p>主动问候，播报日期、天气与穿衣提示，顺带提醒测血压。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">08:00</span>
+            <div class="day-body">
+              <h3>早餐后 <span class="tag tag-p0">用药闭环</span></h3>
+              <p>用药提醒、服药确认；未确认则 5 / 15 / 30 分钟递进提醒，第三次才通知家属。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">09:30</span>
+            <div class="day-body">
+              <h3>主动关怀</h3>
+              <p>“昨晚睡得怎么样？”把“腿疼”这类关键词记进情绪与健康日志。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">11:00</span>
+            <div class="day-body">
+              <h3>午饭</h3>
+              <p>语音点老年餐，忌口与软食偏好自动同步，到餐时播报。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">14:00</span>
+            <div class="day-body">
+              <h3>午后</h3>
+              <p>播放戏曲、老歌，或做五分钟不打分的认知小练习。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">16:00</span>
+            <div class="day-body">
+              <h3>亲情</h3>
+              <p>“想闺女了” → 一键视频通话；没接通就转语音留言。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">18:30</span>
+            <div class="day-body">
+              <h3>晚饭</h3>
+              <p>第二次用药提醒与确认，夜里不再强扰。</p>
+            </div>
+          </li>
+          <li class="day-item reveal">
+            <span class="day-time">21:00</span>
+            <div class="day-body">
+              <h3>睡前</h3>
+              <p>夜间模式，门窗与燃气检查播报，道一声晚安。</p>
+            </div>
+          </li>
+          <li class="day-item night reveal">
+            <span class="day-time">02:00</span>
+            <div class="day-body">
+              <h3>夜间 <span class="tag tag-accent">无人值守</span></h3>
+              <p>离床过久未归先轻声询问；无应答才按预案逐级升级，不惊动整栋楼。</p>
+            </div>
+          </li>
+        </ol>
+
+        <aside class="day-aside">
+          <div class="aside-card reveal">
+            <h3>一天里最要紧的三件事</h3>
+            <div class="mini-flow">
+              <span><b>1</b>叫得应：任何一步都不静默</span>
+              <span><b>2</b>叫得来人：分钟级有人响应</span>
+              <span><b>3</b>按时吃药：确认过才算数</span>
+            </div>
+          </div>
+          <div class="aside-card quote-card reveal">
+            <h3>语音示例</h3>
+            <p class="quote-kai">“王阿姨，药吃了吗？我帮您记一下。”</p>
+            <p>不催促、不评判、只确认——这是用药提醒能被老人接受的前提。</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 03 对话演示 ========== -->
+  <section class="sec" id="demo">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">03 · 它怎么说话</p>
+        <h2>慢一点，等一等，<br>把“听不懂”变成“问清楚”。</h2>
+        <p class="sec-lead">银发语音要适配语速慢、停顿长、含糊、重复和气声；方言要一地方言一验收。下面五段是方案里的真实脚本，可以点开朗读——默认 0.82 倍速，正是给老人听的节奏。</p>
+      </div>
+
+      <div class="demo-grid reveal">
+        <div class="demo-tabs" id="demoTabs" role="tablist" aria-label="语音对话示例">
+          <button class="demo-tab" type="button" role="tab" aria-selected="true" aria-controls="demoLog" data-script="vague">
+            <strong>模糊指代</strong><small>“那个白色的药”</small>
+          </button>
+          <button class="demo-tab" type="button" role="tab" aria-selected="false" aria-controls="demoLog" tabindex="-1" data-script="medicine">
+            <strong>服药提醒</strong><small>提醒不是闹钟，是闭环</small>
+          </button>
+          <button class="demo-tab" type="button" role="tab" aria-selected="false" aria-controls="demoLog" tabindex="-1" data-script="fall">
+            <strong>疑似跌倒</strong><small>先确认，再叫人来</small>
+          </button>
+          <button class="demo-tab" type="button" role="tab" aria-selected="false" aria-controls="demoLog" tabindex="-1" data-script="family">
+            <strong>想孩子了</strong><small>一句话就接通</small>
+          </button>
+          <button class="demo-tab" type="button" role="tab" aria-selected="false" aria-controls="demoLog" tabindex="-1" data-script="scam">
+            <strong>防诈骗</strong><small>只挡住动作，不判断真假</small>
+          </button>
+        </div>
+
+        <div class="demo-panel">
+          <div class="demo-bar">
+            <div class="demo-who">
+              <span class="demo-avatar" aria-hidden="true">安</span>
+              <span>安语<small>居家养老语音助手</small></span>
+            </div>
+            <div class="demo-controls">
+              <span class="demo-hint" id="demoHint">4 句对话</span>
+              <button class="btn btn-ghost btn-sm" type="button" id="demoPlay">
+                <svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span id="demoPlayLabel">朗读示例</span>
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="demoStop" hidden>
+                <svg class="ico" aria-hidden="true"><use href="#i-stop"/></svg>停止
+              </button>
+            </div>
+          </div>
+          <div class="demo-log" id="demoLog" role="tabpanel" aria-live="polite">
+            <noscript><p>开启 JavaScript 后可查看逐句对话动画。</p></noscript>
+          </div>
+          <div class="demo-foot">朗读使用浏览器自带语音合成，语速 0.82 倍。没有声音时，文字同样完整。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 04 应急 ========== -->
+  <section class="sec sec-alt" id="safety">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">04 · 出事的时候</p>
+        <h2>先问一声，再叫人。<br>把“跌倒没人知道”变成<em>分钟内有人响应</em>。</h2>
+        <p class="sec-lead">应急设计里最容易被忽略的一步，是“升级之前先确认”。不做这一步，家属会被误报训练到关掉告警；做了这一步，才敢把响应压到 60 秒。</p>
+      </div>
+
+      <div class="emg-grid">
+        <article class="emg-card reveal">
+          <h3>一次疑似跌倒的 3 分钟</h3>
+          <p>从检测到闭环，每一级都有超时、有回执、有人说话。</p>
+          <div class="timeline">
+            <div class="tl-item">
+              <span class="tl-time">0 秒</span>
+              <div class="tl-body">
+                <b>检测 + 先出声</b>
+                <p>毫米波雷达与手环融合判断疑似跌倒，助手立即询问：“您还好吗？能答应我一声吗？”</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <span class="tl-time">30–60 秒</span>
+              <div class="tl-body">
+                <b>无应答或明确求救，才升级</b>
+                <p>“先确认后升级”把误报压到 ≤3%，也让每一次告警都值得家属起身。</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <span class="tl-time">60 秒</span>
+              <div class="tl-body">
+                <b>家属未接 → 社区值班</b>
+                <p>自动转物业、网格员；老人端不静默，持续安抚“别急着起身”。</p>
+              </div>
+            </div>
+            <div class="tl-item hot">
+              <span class="tl-time">3 分钟</span>
+              <div class="tl-body">
+                <b>未闭环 → 120 与人工坐席</b>
+                <p>按预案联系急救，坐席同步介入；全程留痕，事件 100% 可回溯。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div>
+          <article class="emg-card reveal" data-delay="1">
+            <h3>三级联动，一级都不能空</h3>
+            <div class="tiers">
+              <div class="tier"><b>1</b><span>家属与紧急联系人<small>电话、App 推送、一键回拨</small></span><em>60 秒</em></div>
+              <div class="tier"><b>2</b><span>社区、物业、网格员<small>值班电话 + 工单派单</small></span><em>3 分钟</em></div>
+              <div class="tier"><b>3</b><span>120 / 110 与人工坐席<small>应急信息卡同步推送</small></span><em>预案</em></div>
+            </div>
+            <div class="info-card">
+              <h4>到场者会收到一张应急信息卡</h4>
+              <ul>
+                <li>住址与门牌、楼栋入口</li>
+                <li>病史、过敏史、常用药</li>
+                <li>紧急联系人与授权范围</li>
+                <li>脱敏展示，仅限本次事件</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 用药 ========== -->
+  <section class="sec" id="health">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">05 · 按时吃药</p>
+        <h2>提醒不等于执行。<br>没有确认的提醒，等于没提醒。</h2>
+        <p class="sec-lead">闹钟响了，药还是没吃——这是慢病管理里最常见的断点。方案把“提醒”做成一条有状态、有升级、有记录的闭环，同时守住“不诊断、不改药量”的边界。</p>
+      </div>
+
+      <div class="two-col">
+        <article class="card reveal">
+          <h3><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg>一条提醒的四次尝试</h3>
+          <div class="ladder">
+            <div class="rung">
+              <span class="rung-time">T+0</span><span class="rung-mark" aria-hidden="true"></span>
+              <div class="rung-body"><b>到点播报</b><p>“八点了，该吃早上的降压药啦，一片。”</p></div>
+            </div>
+            <div class="rung">
+              <span class="rung-time">+5 分</span><span class="rung-mark" aria-hidden="true"></span>
+              <div class="rung-body"><b>未确认，再问一句</b><p>“药吃了吗？我帮您记一下。”不催促，也不假设。</p></div>
+            </div>
+            <div class="rung">
+              <span class="rung-time">+15 分</span><span class="rung-mark" aria-hidden="true"></span>
+              <div class="rung-body"><b>第三次提醒</b><p>换一种说法，允许老人说“等会儿吃”。</p></div>
+            </div>
+            <div class="rung alert">
+              <span class="rung-time">+30 分</span><span class="rung-mark" aria-hidden="true"></span>
+              <div class="rung-body"><b>通知家属</b><p>附上提醒次数与当前状态，家属可回拨或远程协助。</p></div>
+            </div>
+            <div class="rung done">
+              <span class="rung-time">确认</span><span class="rung-mark" aria-hidden="true"></span>
+              <div class="rung-body"><b>“吃过了” → 记入依从性</b><p>语音、实体键、药盒开合三选一，形成日 / 周记录。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal" data-delay="1">
+          <h3><svg class="ico" aria-hidden="true"><use href="#i-pill"/></svg>今日用药 · 示例数据</h3>
+          <div class="med-list">
+            <div class="med-row"><time>08:00</time><div><strong>降压药 · 1 片</strong><small>饭后 · 餐桌左边第二格</small></div><span class="med-state ok">已确认 08:07</span></div>
+            <div class="med-row"><time>12:30</time><div><strong>二甲双胍 · 1 片</strong><small>随餐</small></div><span class="med-state wait">待确认</span></div>
+            <div class="med-row"><time>18:30</time><div><strong>降压药 · 1 片</strong><small>饭后</small></div><span class="med-state idle">未到时间</span></div>
+          </div>
+          <p class="card-note">本周确认率 96%。家属端只看结果与趋势，不下诊断结论。</p>
+          <div class="info-card">
+            <h4>红线：这四类一定转人工</h4>
+            <ul>
+              <li>急救判断</li>
+              <li>症状与用药（含改剂量）</li>
+              <li>资金支付</li>
+              <li>法律纠纷</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <article class="card quote-card reveal" style="margin-top:1.2rem">
+        <h3>当老人问“是不是该加半片”</h3>
+        <div class="script-line">
+          <p class="elder"><span>王阿姨</span>我这两天头晕，是不是降压药该加半片？</p>
+          <p><span>安语</span>王阿姨，这个我不能替您拿主意，也不建议自己改药量。我先记下来，帮您给李女士发个消息，建议您先坐下来歇着，要不要我现在接通人工健康坐席？</p>
+        </div>
+        <p class="card-note">AI 不诊断、不开药、不解释检查报告；它记录、提醒、建议就医，并把问题交到人手里。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== 06 亲情 ========== -->
+  <section class="sec sec-alt" id="family">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">06 · 有人惦记</p>
+        <h2>“想闺女了”<br>——这句话只该有一个回答。</h2>
+        <p class="sec-lead">亲情联络的价值不在于“能视频”，而在于老人不需要学会任何操作。与此同时，家属看到的是状态与趋势，而不是一间被直播的客厅。</p>
+      </div>
+
+      <div class="two-col">
+        <article class="card quote-card reveal">
+          <h3><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg>一句话接通</h3>
+          <div class="script-line">
+            <p class="elder"><span>王阿姨</span>小助手，我想闺女了。</p>
+            <p><span>安语</span>我这就给李女士打视频。要是她没接，我帮您留句话，好吗？</p>
+            <p><span>安语</span>今天聊了六分钟。要不要我把周六她来看您记到日程里？</p>
+          </div>
+          <p class="card-note">未接通自动转语音留言：老人说一句，原声与转写同时推给家属；家属回复由设备播报。</p>
+        </article>
+
+        <article class="card reveal" data-delay="1">
+          <div class="report-head">
+            <h3><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg>家属周报</h3>
+            <span class="tag">示例数据</span>
+          </div>
+          <div class="report-metrics">
+            <div class="metric"><span>亲情通话</span><div class="bar"><i style="width:72%"></i></div><b>4 次</b></div>
+            <div class="metric"><span>用药确认</span><div class="bar"><i style="width:96%"></i></div><b>21 / 21</b></div>
+            <div class="metric"><span>血压记录</span><div class="bar"><i style="width:88%"></i></div><b>7 次</b></div>
+            <div class="metric warn"><span>情绪关键词</span><div class="bar"><i style="width:34%"></i></div><b>“腿疼” ×2</b></div>
+          </div>
+          <div class="keywords">
+            <span class="tag">睡得浅 ×1</span>
+            <span class="tag">活动 6 天</span>
+            <span class="tag">夜间离床 2 次（在正常范围）</span>
+          </div>
+          <p class="card-note">四段式一屏读完：健康、安全、活动、情绪。只呈现，不下结论；异常才标红。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 07 模块 ========== -->
+  <section class="sec" id="modules">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">07 · 功能全貌</p>
+        <h2>十个模块，<br>从“叫得应”到“有人兜底”。</h2>
+        <p class="sec-lead">P0 是没有它产品就不成立的部分。点开任一模块，可看到核心功能与验收要点；完整的功能表、脚本与指标在<a href="docs.html" style="color:var(--primary);font-weight:600;text-decoration:underline;text-underline-offset:3px">设计方案全文</a>里。</p>
+      </div>
+
+      <div class="modules">
+        <details class="mod reveal" open>
+          <summary>
+            <span class="mod-top"><span class="mod-code">M1</span><span class="mod-title">适老语音交互引擎</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">让“说话”成为唯一必需技能</span>
+            <span class="mod-more">9 项 P0 能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F1-01</code>多方式唤醒 · 3–5 米远场，安静环境唤醒率 ≥ 98%</li>
+              <li><code>F1-02</code>银发语音识别 · 字错率相对通用模型下降 ≥ 30%</li>
+              <li><code>F1-03</code>方言与口音 · 粤、吴、川、鲁、闽等方言包，意图识别 ≥ 88%</li>
+              <li><code>F1-04</code>模糊消歧 · “那个白色的药”也能对上，不确定就复述确认</li>
+              <li><code>F1-06</code>慢速播报 · 默认 0.85 倍速、句间停顿加长，可随时说“慢点”</li>
+              <li><code>F1-09</code>离线指令集 · 断网仍可救命、打电话、关灯、报时，≥10 条</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-1">查看 M1 完整功能与验收 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="1">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M2</span><span class="mod-title">安全守护与应急响应</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">出事时，分钟级有人响应</span>
+            <span class="mod-more">8 项 P0 能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F2-01</code>跌倒与坠床检测 · 雷达 + 可穿戴融合，默认不采影像</li>
+              <li><code>F2-02</code>先确认后升级 · 30–60 秒语音求证，误报 ≤ 3%</li>
+              <li><code>F2-03</code>一键 SOS · 实体键不依赖唤醒词与网络，首通 ≤ 30 秒</li>
+              <li><code>F2-04</code>三级联动 · 家属 → 社区 → 120，每级有超时与回执</li>
+              <li><code>F2-08</code>应急信息卡 · 住址、病史、过敏史、常用药、联系人</li>
+              <li><code>F2-10</code>事件复盘 · 全流程时间戳，100% 可回溯</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-2">查看 M2 完整功能与验收 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="2">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M3</span><span class="mod-title">健康管理与用药提醒</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">把提醒做成确认过的闭环</span>
+            <span class="mod-more">5 项 P0 能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F3-01</code>用药计划 · 家属或药师录入，AI 不推断处方</li>
+              <li><code>F3-02</code>分级提醒 · 未确认 5 / 15 / 30 分钟递进，第三次通知家属</li>
+              <li><code>F3-03</code>服药确认 · 语音、实体键、药盒开合三选一</li>
+              <li><code>F3-04</code>体征录入 · “血压 135 85”复述确认后入档</li>
+              <li><code>F3-09</code>边界护栏 · 症状、剂量、急症统一转人工或建议就医</li>
+              <li><code>F3-05</code>趋势周报 · 只呈现曲线与次数，不下结论</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-3">查看 M3 完整功能与验收 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="3">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M4</span><span class="mod-title">生活服务与智能家居</span><span class="tag tag-p1">P1</span></span>
+            <span class="mod-value">动动嘴把日子过顺</span>
+            <span class="mod-more">8 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F4-01</code>家居控制 · “太冷了”“亮一点”也能听懂</li>
+              <li><code>F4-02</code>助餐 · 忌口与软食偏好自动同步，到餐播报</li>
+              <li><code>F4-03</code>助洁助行助浴 · 语音下单，派单进度可查</li>
+              <li><code>F4-04</code>缴费代办 · 家属授权 + 二次确认 + 单笔限额</li>
+              <li><code>F4-08</code>服务评价 · 完成后一句语音回访，形成质量闭环</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-4">查看 M4 完整功能 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M5</span><span class="mod-title">情感陪伴与精神慰藉</span><span class="tag tag-p1">P1</span></span>
+            <span class="mod-value">每天都有一句惦记</span>
+            <span class="mod-more">8 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F5-01</code>主动关怀 · 固定时段的问候，比随时搭话更容易被接受</li>
+              <li><code>F5-02</code>倾听 · 允许反复讲旧事，不打断、不纠正、不说“您讲过了”</li>
+              <li><code>F5-03</code>怀旧内容 · 老歌、戏曲、评书、年代新闻</li>
+              <li><code>F5-04</code>情绪识别 · 语气与关键词，持续异常才提醒家属</li>
+              <li><code>F5-07</code>生命故事 · 是否分享给家属，由老人决定</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-5">查看 M5 完整功能 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="1">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M6</span><span class="mod-title">亲情联络与家属协同</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">一句话就找到孩子</span>
+            <span class="mod-more">6 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F6-01</code>一键通话 · “打给闺女”即拨，自动重拨，未接转留言</li>
+              <li><code>F6-02</code>语音留言 · 原声 + 转文字，家属回复由设备播报</li>
+              <li><code>F6-04</code>家属周报 · 健康、安全、活动、情绪四段式</li>
+              <li><code>F6-05</code>授权中心 · 老人决定家人能看到什么、能收到什么告警</li>
+              <li><code>F6-06</code>远程协助 · 可设提醒、改联系人，但不得实时监听</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-6">查看 M6 完整功能 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="2">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M7</span><span class="mod-title">家属端、社区端与运营后台</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">让每个告警都有人接</span>
+            <span class="mod-more">三端职责</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>家属端</code>告警中心、健康周报、通话与留言、设备状态、授权管理</li>
+              <li><code>社区端</code>老人档案与分级标签、批量看护看板、工单派单、上门记录</li>
+              <li><code>运营后台</code>话术与知识库、阈值配置、录音抽检、SLA 监控、灰度发布</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-7">查看 M7 完整职责 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="3">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M8</span><span class="mod-title">适老化与无障碍</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">不学、不看、不记也能用</span>
+            <span class="mod-more">8 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F8-01</code>大字体高对比 · 屏显主文字 ≥ 24px，对比度 ≥ 4.5:1</li>
+              <li><code>F8-02</code>慢播报可重复 · 无倒计时压迫，随时可说“再说一遍”</li>
+              <li><code>F8-04</code>一键直达 · 无菜单层级、无验证码、无广告、无弹窗</li>
+              <li><code>F8-05</code>外观去标签化 · 不像医疗器械，也不像监控摄像头</li>
+              <li><code>F8-06</code>安装即用 · 配置由家属或坐席远程完成，老人零设置</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-8">查看 M8 完整功能 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M9</span><span class="mod-title">隐私安全与合规</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">让老人敢用、家属放心</span>
+            <span class="mod-more">9 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F9-01</code>最小必要 · 默认不启用摄像头，雷达不成像</li>
+              <li><code>F9-02</code>逐项同意 · 录音、声纹、定位、健康分别授权</li>
+              <li><code>F9-06</code>家属边界 · 不提供实时监听与隐蔽查看</li>
+              <li><code>F9-07</code>防诈骗 · 验证码不转述、账户信息不透露</li>
+              <li><code>F9-09</code>合规基线 · 开展个人信息保护影响评估</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-9">查看 M9 完整功能 →</a>
+          </div>
+        </details>
+
+        <details class="mod reveal" data-delay="1">
+          <summary>
+            <span class="mod-top"><span class="mod-code">M10</span><span class="mod-title">运营服务与人工兜底</span><span class="tag tag-p0">P0</span></span>
+            <span class="mod-value">AI 靠不住时，有人接</span>
+            <span class="mod-more">8 项能力</span>
+          </summary>
+          <div class="mod-body">
+            <ul>
+              <li><code>F10-01</code>7×24 人工坐席 · 应急、健康疑问、投诉、设备问题一键转人工</li>
+              <li><code>F10-02</code>四类强制转人工 · 急救判断、症状用药、资金支付、法律纠纷</li>
+              <li><code>F10-04</code>SLA · 告警 60 秒响应，投诉 48 小时闭环</li>
+              <li><code>F10-05</code>银龄体验官 · 邀请老人参与内测，按“软抵抗”反馈迭代</li>
+              <li><code>F10-08</code>质检复盘 · 应急事件 100% 复盘，月度分析误报与漏报</li>
+            </ul>
+            <a class="mod-link" href="docs.html#s4-10">查看 M10 完整功能 →</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 08 原则与边界 ========== -->
+  <section class="sec sec-alt" id="design">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">08 · 原则与边界</p>
+        <h2>六条设计原则，<br>一条比一条难做到。</h2>
+        <p class="sec-lead">原则不是价值观口号，而是取舍工具：当“功能更多”和“老人更愿意用”冲突时，答案已经写在这里。</p>
+      </div>
+
+      <div class="principles">
+        <div class="principle reveal"><b><span>01</span>语音优先，零学习成本</b><p>不要求识字、点屏、记指令、记唤醒词。任何一步失败都不能静默。</p></div>
+        <div class="principle reveal" data-delay="1"><b><span>02</span>无感优先，按键兜底</b><p>优先采用不成像的毫米波雷达，同时永远保留一个实体求助键。</p></div>
+        <div class="principle reveal" data-delay="2"><b><span>03</span>尊严感优先</b><p>外观与话术不标签化，不说“监控”“看管”，授权由老人掌握。</p></div>
+        <div class="principle reveal"><b><span>04</span>高风险必有人工兜底</b><p>急救、症状用药、支付、法律纠纷四类，AI 只做转接与提示。</p></div>
+        <div class="principle reveal" data-delay="1"><b><span>05</span>最小必要与可解释</b><p>少采集、本地优先，并且说清“我为什么提醒您”。</p></div>
+        <div class="principle reveal" data-delay="2"><b><span>06</span>服务闭环优于对话能力</b><p>每个意图都要落到具体动作与语音回执，不允许“聊完就没有然后”。</p></div>
+      </div>
+
+      <div class="boundary reveal">
+        <h3 class="boundary-title"><svg class="ico" aria-hidden="true" style="color:var(--accent)"><use href="#i-alert"/></svg>责任边界：说清楚不做什么，才敢做能做的</h3>
+        <div class="boundary-grid">
+          <div class="b-card">
+            <h4>健康</h4>
+            <p class="can" data-label="可以做">提醒、记录、趋势呈现、建议就医、整理主诉摘要</p>
+            <p class="cannot" data-label="不可以做">诊断、开药、解释检查报告、调整剂量</p>
+          </div>
+          <div class="b-card">
+            <h4>应急</h4>
+            <p class="can" data-label="可以做">发现异常、语音确认、呼救、安抚、通知、推送信息卡</p>
+            <p class="cannot" data-label="不可以做">承诺救援结果、替代 120 做伤情判定</p>
+          </div>
+          <div class="b-card">
+            <h4>支付</h4>
+            <p class="can" data-label="可以做">小额代叫服务并经二次确认、播报明细</p>
+            <p class="cannot" data-label="不可以做">代扣大额、读取或转述密码与验证码</p>
+          </div>
+          <div class="b-card">
+            <h4>法律与防诈</h4>
+            <p class="can" data-label="可以做">提示风险、拒答并转人工或家属</p>
+            <p class="cannot" data-label="不可以做">给出法律结论、代做转账决策</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 09 技术 ========== -->
+  <section class="sec sec-deep" id="tech">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">09 · 技术与可靠性</p>
+        <h2>关键时刻，<br>不能有“正在加载”。</h2>
+        <p class="sec-lead">断网、断电、设备离线——这三件事一定会发生。架构的目标不是永不故障，而是故障时仍然“叫得应”。</p>
+      </div>
+
+      <div class="layers reveal">
+        <div class="layer"><b>L1</b><div><strong>交互接入层</strong><p>带屏音箱 · 可穿戴 · 实体 SOS 键 · 家属小程序 · Web 后台；远场拾音、波束成形、回声消除</p></div></div>
+        <div class="layer"><b>L2</b><div><strong>语音与理解层</strong><p>端侧 VAD 与唤醒 · 银发 ASR · 方言包 · 声纹 · 意图槽位与多轮管理 · 慢速 TTS</p></div></div>
+        <div class="layer"><b>L3</b><div><strong>能力与知识层</strong><p>大模型 + 养老知识库检索增强 · 健康规则引擎 · 提醒引擎 · 风控与话术模板</p></div></div>
+        <div class="layer"><b>L4</b><div><strong>服务与联动层</strong><p>告警工单与三级联动 · 助餐助洁助行派单 · 智能家居控制 · 预约与受限支付</p></div></div>
+        <div class="layer"><b>L5</b><div><strong>数据与治理层</strong><p>老人档案 · 授权与同意 · 加密与审计 · 日志 · 数据看板 · 模型灰度迭代</p></div></div>
+      </div>
+
+      <div class="reliability reveal">
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-wifi"/></svg>断网：4G 备份 + ≥10 条本地指令</span>
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-battery"/></svg>断电：内置电池 ≥ 4 小时</span>
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg>心跳：离线 5 分钟主动通知</span>
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg>误报：多传感融合 + 语音确认</span>
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg>时延：非模型 ≤1.5 秒 / 模型 ≤3 秒</span>
+        <span class="pill"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg>链路隔离：聊天再忙也不挤占呼救</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 10 路线图 ========== -->
+  <section class="sec" id="roadmap">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">10 · 路线图与指标</p>
+        <h2>MVP 只做三件事：<br>叫得应、叫得来人、按时吃药。</h2>
+        <p class="sec-lead">养老智能设备的失败往往不是功能太少，而是功能太多把老人吓退了。先用三个月把信任建起来，再叠加陪伴与生活服务。</p>
+      </div>
+
+      <div class="phases">
+        <article class="phase is-mvp reveal">
+          <div class="phase-top"><span>PHASE 01</span><span class="tag tag-accent">MVP</span></div>
+          <h3>建立信任</h3>
+          <p class="phase-period">0–3 个月</p>
+          <ul>
+            <li>M1 核心：唤醒、方言、慢播报、离线指令</li>
+            <li>M2 全部 P0：跌倒、SOS、三级联动</li>
+            <li>M3 用药提醒与体征录入</li>
+            <li>M6 一键通话、M7 家属端最小看板</li>
+            <li>M8 / M9 基线，M10 坐席</li>
+          </ul>
+          <p class="milestone"><b>验收</b>20–30 户真实老人试点；应急闭环 100% 可回溯；设备弃用率 ≤ 5%</p>
+        </article>
+
+        <article class="phase reveal" data-delay="1">
+          <div class="phase-top"><span>PHASE 02</span><span class="tag">扩展</span></div>
+          <h3>把日子过顺</h3>
+          <p class="phase-period">4–8 个月</p>
+          <ul>
+            <li>M3 完整版：趋势、复诊、依从性</li>
+            <li>M4 生活服务与智能家居</li>
+            <li>M5 情感陪伴</li>
+            <li>M7 社区端与工单</li>
+            <li>知识库与银龄体验官机制</li>
+          </ul>
+          <p class="milestone"><b>验收</b>扩至 300–500 户；日均有效语音轮次达标；误报率 ≤ 3%</p>
+        </article>
+
+        <article class="phase reveal" data-delay="2">
+          <div class="phase-top"><span>PHASE 03</span><span class="tag">规模化</span></div>
+          <h3>可复制的标准</h3>
+          <p class="phase-period">9–15 个月</p>
+          <ul>
+            <li>M5 认知训练与生命故事</li>
+            <li>M2 走失防护</li>
+            <li>多方言包与机构版</li>
+            <li>数据看板与模型迭代</li>
+          </ul>
+          <p class="milestone"><b>验收</b>形成可跨区域复制的产品与服务标准；通过合规审计</p>
+        </article>
+      </div>
+
+      <div class="kpi-wrap">
+        <article class="kpi-hero reveal">
+          <span class="tag">第一指标</span>
+          <div>
+            <div class="big">≤5<span>%</span></div>
+            <h3>设备弃用率</h3>
+            <p>连续 7 天零使用的设备占比。装了不用，是这个品类最真实的失败——它还能反向暴露尊严感、误报、话术、识别率等一整串问题。</p>
+          </div>
+        </article>
+
+        <div class="kpi-grid reveal" data-delay="1">
+          <div class="kpi-card"><dt>≥98%</dt><dd>3 米安静环境唤醒率</dd></div>
+          <div class="kpi-card"><dt>≥88%</dt><dd>目标方言意图识别准确率</dd></div>
+          <div class="kpi-card"><dt>≤3%</dt><dd>经语音确认后的误报率</dd></div>
+          <div class="kpi-card"><dt>≥90%</dt><dd>用药确认率（有确认记录的提醒）</dd></div>
+          <div class="kpi-card"><dt>100%</dt><dd>告警闭环率（有处置结果并归档）</dd></div>
+          <div class="kpi-card"><dt>≥95%</dt><dd>SLA 达标率（响应与上门）</dd></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 11 隐私 ========== -->
+  <section class="sec sec-alt" id="trust">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">11 · 隐私与合规</p>
+        <h2>让老人敢用，<br>比让老人会用更难。</h2>
+        <p class="sec-lead">家里的设备一旦越界，信任就很难修复。方案把“少采集、本地优先、授权可见”写成硬约束，也把家属的访问边界写清楚。</p>
+      </div>
+
+      <div class="pledges">
+        <div class="pledge reveal"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-camera"/></svg></span><div><b>默认不采影像</b><p>摄像头默认关闭，毫米波雷达不成像，只输出事件。</p></div></div>
+        <div class="pledge reveal" data-delay="1"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg></span><div><b>本地优先</b><p>唤醒词、常用指令、声纹模板在端侧处理，只上传必要文本。</p></div></div>
+        <div class="pledge reveal" data-delay="2"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg></span><div><b>逐项明示同意</b><p>录音、声纹、定位、健康数据分别授权，语音与大字双确认。</p></div></div>
+        <div class="pledge reveal"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></span><div><b>家属访问有边界</b><p>不提供实时监听，也不提供隐蔽查看；授权由老人掌握。</p></div></div>
+        <div class="pledge reveal" data-delay="1"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-alert"/></svg></span><div><b>防诈骗护栏</b><p>识别索要验证码、冒充亲友、中奖话术；不代收验证码、不透露账户。</p></div></div>
+        <div class="pledge reveal" data-delay="2"><span class="p-ico"><svg class="ico" aria-hidden="true"><use href="#i-headset"/></svg></span><div><b>高风险转人工</b><p>急救、症状用药、支付、法律纠纷四类，AI 只转接不拍板。</p></div></div>
+      </div>
+
+      <p class="compliance-note reveal">合规基线：按《个人信息保护法》《老年人权益保障法》开展个人信息保护影响评估与合规评审；等保与算法备案按实际业务形态评估。涉及医疗、急救、支付的功能上线前须完成专项评审，并明确“非诊断、不替代 120”的边界。</p>
+
+      <details class="policy reveal">
+        <summary>政策依据与参考资料（9 项）</summary>
+        <div class="policy-body">
+          <ol>
+            <li>国务院办公厅《关于切实解决老年人运用智能技术困难的实施方案》（2020 年 11 月）。</li>
+            <li>国务院办公厅《关于发展银发经济增进老年人福祉的意见》（2024 年 1 月）。</li>
+            <li>《中共中央 国务院关于深化养老服务改革发展的意见》（2025 年 1 月）。</li>
+            <li>民政部等八部门《关于培育养老服务经营主体 促进银发经济发展的若干措施》（2025 年 12 月）。</li>
+            <li>《民政部关于进一步推进民政科技创新的指导意见》（2026 年 1 月）。</li>
+            <li>商务部等八部门《关于加快“人工智能+消费”发展的实施意见》（2026 年 6 月）。</li>
+            <li>民政部网站《共同推进适老化智能服务》：多地消协适老化智能服务倡议及西安实践。</li>
+            <li>《中国城市报》2026 年 8 月 31 日《智能技术升级 逐步破解老人们的“软抵抗”》：老年人口数据、无感监测与银发语音模型相关情况。</li>
+            <li>公开报道中南京、上海、北京海淀等地“人工智能+养老”落地案例（2026 年）。</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="cta-band">
+    <div class="wrap">
+      <div class="cta-inner reveal">
+        <div>
+          <h2>完整方案：10 章、34 节、<span class="nowrap">28 张功能表</span></h2>
+          <p>从政策依据、用户画像、五层架构，到每个功能的验收阈值、交互脚本、技术建议与风险应对。适合产品、研发、运营与养老服务机构一起读。</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="index.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-voice"/></svg>开始体验
+          </a>
+          <a class="btn btn-ghost" href="docs.html">打开设计方案</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+          </span>
+          <span class="brand-text"><strong>安语</strong><small>AI 语音养老助手</small></span>
+        </a>
+        <p class="footer-about">以语音为唯一主入口、以安全应急闭环为底座、以“叫得应、叫得来人、按时吃药、有人惦记”为承诺的居家养老助手。</p>
+      </div>
+      <div>
+        <h4>产品</h4>
+        <ul>
+          <li><a href="index.html">开始体验</a></li>
+          <li><a href="#safety">安全守护与应急</a></li>
+          <li><a href="#health">用药与健康</a></li>
+          <li><a href="#family">亲情联络</a></li>
+          <li><a href="#modules">十大模块</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>方案</h4>
+        <ul>
+          <li><a href="docs.html">设计方案全文</a></li>
+          <li><a href="community.html">社区值守台</a></li>
+          <li><a href="docs.html#s3">总体功能架构</a></li>
+          <li><a href="docs.html#s7">实施路线图</a></li>
+          <li><a href="docs.html#s9">风险与应对</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>说明</h4>
+        <ul>
+          <li>版本 V1.0 · 2026 年 11 月</li>
+          <li>根据《AI 语音养老服务助手功能设计方案》制作</li>
+          <li>页面数据为示例，指标为建议值</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>本页面为产品设计方案的可视化呈现，不构成医疗建议，不替代 120、子女、护工与社区；所有指标阈值需试点数据校准，医疗、急救、支付与个人信息处理相关功能上线前须专项合规评审。</p>
+      <p>© <span id="year">2026</span> 安语 · 产品方案演示</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

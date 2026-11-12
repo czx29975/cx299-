@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>安语 · 居家养老语音助手（可用演示）</title>
+<meta name="description" content="一个真的能用的居家养老语音助手演示：说话或打字即可记录服药、量血压、给家人打电话、发起紧急求助；家属端可看待办告警、周报与授权。数据仅保存在本机。">
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/app.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="app">
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v4"/><circle cx="12" cy="16.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3h3L11 7.5 9 9a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M17.5 20a5 5 0 0 0-2.2-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-4M12 16V7M16 16v-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-2.9 7.4-7 9-4.1-1.6-7-4.6-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h7l5 5v13H6z"/><path d="M13 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h7M15 17h5"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="13" cy="17" r="2"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M4 9h16"/><path d="M12 9v5"/><path d="M8 21l4-7 4 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19a4 4 0 0 1-4 4h-2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8.5 10V8a3.5 3.5 0 0 1 7 0v2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 11.5L20 4l-7 16-2.4-6.1z"/><path d="M10.6 13.9L14 10.5"/></symbol>
+</svg>
+
+<header class="app-header">
+  <div class="app-wrap app-header-inner">
+    <a class="brand" href="index.html" aria-label="安语 · 居家养老语音助手">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>居家养老语音助手</small></span>
+    </a>
+
+    <div class="role-switch" role="tablist" aria-label="切换使用角色">
+      <button class="role-btn" type="button" role="tab" aria-selected="true" aria-controls="view-home" data-view="home">老人端</button>
+      <button class="role-btn" type="button" role="tab" aria-selected="false" aria-controls="view-family" data-view="family">家属端</button>
+    </div>
+
+    <div class="app-actions">
+      <button class="bigtext-btn" id="bigTextBtn" type="button" aria-pressed="false" aria-label="切换大字模式">
+        <svg class="ico" aria-hidden="true"><use href="#i-access"/></svg><span class="label">大字</span>
+      </button>
+      <button class="icon-btn" id="settingsBtn" type="button" aria-label="设置">
+        <svg class="ico" aria-hidden="true"><use href="#i-gear"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm about-link" href="about.html">了解方案</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="app-wrap">
+    <div class="demo-strip">
+      <b>可用演示</b>
+      <span class="demo-long">数据只保存在本机浏览器；通话、急救与社区联动为模拟流程，不会真的拨号或报警。</span>
+      <span class="demo-short">数据仅存本机；通话与急救为模拟。</span>
+      <span class="spacer"></span>
+      <button type="button" id="helpBtn">怎么用？</button>
+    </div>
+    <p class="storage-warn" id="storageWarn" hidden>当前浏览器不允许本地存储，本次记录关闭页面后会丢失。用 Chrome / Edge 或本地服务器打开可正常保存。</p>
+  </div>
+
+  <!-- ================= 老人端 ================= -->
+  <section class="view" id="view-home" role="tabpanel" aria-label="老人端">
+    <div class="app-wrap home-grid">
+      <div class="home-main">
+        <div class="home-head">
+          <div>
+            <p class="home-meta"><span id="dateLine">11 月 10 日 · 周二</span><span class="dot-sep">·</span><span id="weatherLine">晴 18°（示例）</span></p>
+            <h1 class="home-greet" id="greetLine">王阿姨，晚上好</h1>
+            <p class="home-sub">有事跟我说一声，我在。</p>
+          </div>
+          <div class="home-clock" id="clockLine" aria-label="当前时间">21:44</div>
+        </div>
+
+        <div class="voice-stage">
+          <button class="orb" id="talkBtn" type="button" aria-label="点一下开始说话">
+            <svg class="ico" aria-hidden="true"><use href="#i-mic"/></svg>
+          </button>
+          <p class="voice-hint" id="voiceHint">点一下，跟我说话</p>
+          <p class="live-text" id="liveText" aria-live="polite"></p>
+          <form class="say-form" id="sayForm">
+            <label class="sr-only" for="sayInput">输入想说的话</label>
+            <input id="sayInput" type="text" autocomplete="off" placeholder="也可以在这里打字，比如：我吃过了">
+            <button class="btn btn-primary" type="submit">
+              <svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span class="send-label">发送</span>
+            </button>
+          </form>
+          <div class="chips" id="quickChips">
+            <button class="chip" type="button" data-say="我吃过了">我吃过了</button>
+            <button class="chip" type="button" data-say="打给女儿">打给女儿</button>
+            <button class="chip" type="button" data-say="我有点头晕">我有点头晕</button>
+            <button class="chip" type="button" data-say="今天几号">今天几号</button>
+            <button class="chip" type="button" data-say="血压 135 85">血压 135 85</button>
+            <button class="chip" type="button" data-say="放段戏曲">放段戏曲</button>
+            <button class="chip is-sos" type="button" data-sos="chip">紧急求助</button>
+          </div>
+        </div>
+
+        <div class="convo-card">
+          <div class="convo-head"><strong>刚才的对话</strong><span>说错了可以重新说</span></div>
+          <div class="convo" id="convo" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <aside class="home-side">
+        <div class="sos-dock">
+          <button class="sos-btn" id="sosBtn" type="button" data-sos="button">
+            <span class="sos-ico"><svg class="ico" aria-hidden="true"><use href="#i-alert"/></svg></span>
+            <span><strong>紧急求助</strong><small>点一下，3 秒后开始呼叫</small></span>
+          </button>
+        </div>
+
+        <section class="ay-card">
+          <div class="panel-head"><h2>今日用药</h2><span class="panel-count" id="medProgress">0 / 3</span></div>
+          <div id="medList"></div>
+          <p class="panel-note">确认后才算数；三次未确认会通知家属。</p>
+        </section>
+
+        <section class="ay-card">
+          <div class="panel-head"><h2>家人留言</h2><button class="link-btn" type="button" id="speakMsgBtn">读给我听</button></div>
+          <div id="msgList"></div>
+        </section>
+
+        <section class="ay-card safety-panel">
+          <div class="panel-head"><h2>安全守护</h2><span class="tag">示例状态</span></div>
+          <ul class="safety-list" id="safetyList"></ul>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= 家属端 ================= -->
+  <section class="view" id="view-family" role="tabpanel" aria-label="家属端" hidden>
+    <div class="app-wrap family-view">
+      <div class="family-head">
+        <div>
+          <p class="eyebrow">家属端 · 李梅（女儿）</p>
+          <h1 id="familyGreeting">妈妈今天整体平稳。</h1>
+          <p class="muted">用药、告警、血压与留言都在这儿；健康数据是否可见，由妈妈授权。</p>
+        </div>
+        <div class="family-actions">
+          <button class="btn btn-primary btn-sm" type="button" id="recordVitalBtn">记录血压</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="emergencyCardBtn">应急信息卡</button>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="family-grid">
+        <div class="family-col">
+          <section class="ay-card" data-card="alerts">
+            <div class="panel-head"><h2>告警中心</h2><span class="tag" id="alertCount">0 条待处理</span></div>
+            <div class="alert-list" id="alertList"></div>
+          </section>
+
+          <section class="ay-card" data-card="meds">
+            <div class="panel-head"><h2>今日用药</h2><span class="panel-count" id="familyMedProgress">0 / 3</span></div>
+            <div id="familyMedList"></div>
+            <p class="panel-note">用药计划由家属或药师录入，AI 不推断处方。</p>
+          </section>
+
+          <section class="ay-card" data-card="consent">
+            <div class="panel-head"><h2>授权中心</h2><span class="tag">妈妈掌握</span></div>
+            <div class="consent-list">
+              <label class="switch"><span>健康数据共享<small>血压、体征与周报</small></span><input type="checkbox" data-consent="shareHealth" checked><i aria-hidden="true"></i></label>
+              <label class="switch"><span>雷达无感监测<small>不成像，只输出事件</small></span><input type="checkbox" data-consent="radar" checked><i aria-hidden="true"></i></label>
+              <label class="switch"><span>定位与走失防护<small>需单独授权定位设备</small></span><input type="checkbox" data-consent="location"><i aria-hidden="true"></i></label>
+              <label class="switch"><span>实时语音监听<small>产品不提供，此处仅作边界说明</small></span><input type="checkbox" disabled><i aria-hidden="true"></i></label>
+            </div>
+            <p class="panel-note">授权变更会语音告知老人；撤回后家属端立即隐藏对应数据。</p>
+          </section>
+        </div>
+
+        <div class="family-col">
+          <section class="ay-card" data-card="report">
+            <div class="panel-head"><h2>本周报告</h2><span class="tag">只呈现，不下结论</span></div>
+            <div id="reportBody"></div>
+          </section>
+
+          <section class="ay-card" data-card="messages">
+            <div class="panel-head"><h2>给妈妈留言</h2><span class="tag">设备会播报</span></div>
+            <div class="thread" id="thread"></div>
+            <form class="compose" id="composeForm">
+              <label class="sr-only" for="composeInput">留言内容</label>
+              <input id="composeInput" type="text" autocomplete="off" placeholder="妈，周六上午十点我来看您">
+              <button class="btn btn-primary btn-sm" type="submit">发送</button>
+            </form>
+          </section>
+
+          <section class="ay-card" data-card="device">
+            <div class="panel-head"><h2>设备与值守</h2><span class="tag">示例</span></div>
+            <ul class="device-list" id="deviceList"></ul>
+            <div class="device-actions">
+              <button class="btn btn-ghost btn-sm" type="button" id="seatBtn">
+                <svg class="ico" aria-hidden="true"><use href="#i-headset"/></svg>接通人工坐席
+              </button>
+              <button class="btn btn-ghost btn-sm" type="button" id="helpBtn2">使用说明</button>
+            </div>
+            <p class="panel-note">应急事件 100% 留痕；告警 60 秒响应，投诉 48 小时闭环。</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-wrap">
+    <footer class="app-footer">
+      <span>安语 · 可用演示 · 数据仅存本机</span>
+      <a href="about.html">了解方案</a>
+      <a href="community.html">社区端</a>
+      <a href="docs.html">设计方案全文</a>
+      <a href="#" id="helpLink">使用说明</a>
+      <span class="spacer">非诊断、不替代 120；指标为方案建议值</span>
+    </footer>
+  </div>
+</main>
+
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<noscript>
+  <div style="position:fixed;inset:0;background:#FBF8F2;z-index:999;padding:2rem;font-family:sans-serif">
+    <h1>需要开启 JavaScript</h1>
+    <p>这个演示的语音、用药记录与家属端都依赖浏览器脚本，请开启后刷新。</p>
+  </div>
+</noscript>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

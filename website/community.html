@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>社区值守台 · 安语 AI 语音养老服务助手</title>
+<meta name="description" content="社区端值守台：接收老人端紧急求助与设备告警，按响应时限接单、到场、转 120、结案，并查看辖区名册与运营指标。与老人端、家属端共用同一份本机数据。">
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/console.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="ct">
+
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v4"/><circle cx="12" cy="16.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M17.5 20a5 5 0 0 0-2.2-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-4M12 16V7M16 16v-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3h3L11 7.5 9 9a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19a4 4 0 0 1-4 4h-2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-2.9 7.4-7 9-4.1-1.6-7-4.6-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0"/><path d="M6.5 12.5a8.5 8.5 0 0 1 11 0"/><path d="M10 16a4 4 0 0 1 4 0"/><circle cx="12" cy="19.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8.5 10V8a3.5 3.5 0 0 1 7 0v2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h7l5 5v13H6z"/><path d="M13 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M4 9h16"/><path d="M12 9v5"/><path d="M8 21l4-7 4 7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+</svg>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="安语 · 居家养老语音助手">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>社区值守台</small></span>
+    </a>
+
+    <nav class="nav" aria-label="控制台导航">
+      <a href="#board" class="is-on">工单</a>
+      <a href="#roster">辖区名册</a>
+      <a href="#metrics">运营指标</a>
+    </nav>
+
+    <div class="topbar-actions">
+      <span class="ct-shift" id="shiftLine"><i class="dot-live" aria-hidden="true"></i>值守中 · 20:00–08:00</span>
+      <a class="btn btn-ghost btn-sm" href="index.html">老人端</a>
+      <a class="btn btn-ghost btn-sm" href="index.html#family">家属端</a>
+      <a class="btn btn-primary btn-sm" href="docs.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>设计方案
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ 值守概览 ============ -->
+  <section class="ct-hero" aria-labelledby="ctTitle">
+    <div class="wrap ct-hero-grid">
+      <div>
+        <p class="kicker">碑林区建设路社区 · 值班台</p>
+        <h1 id="ctTitle">今晚，<em>3 位</em>老人需要有人接得住。</h1>
+        <p class="ct-lead">这里接收老人端的紧急求助、语音主诉与设备告警。工单会按响应时限自动升级：<strong>60 秒内未接单提醒网格员</strong>，3 分钟未到场同步值班长与家属。</p>
+        <p class="ct-note">与老人端、家属端共用同一份本机数据 —— 在另一标签页发起求助，这里会自己冒出来。</p>
+      </div>
+      <div class="ct-kpis" id="kpis" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ============ 工单看板 ============ -->
+  <section class="ct-sec" id="board" aria-labelledby="boardTitle">
+    <div class="wrap">
+      <div class="ct-sec-head">
+        <div>
+          <h2 id="boardTitle">工单看板</h2>
+          <p>接单即锁定责任人；每个动作都会写进事件时间线，事后可追溯。</p>
+        </div>
+        <div class="ct-board-tools">
+          <span class="ct-live" id="liveState"><i class="dot-live" aria-hidden="true"></i>实时同步</span>
+          <button class="btn btn-ghost btn-sm" type="button" id="seedTicket">模拟一条求助</button>
+        </div>
+      </div>
+
+      <div class="ct-board-grid">
+        <div class="ct-list-wrap">
+          <div class="ct-tabs" role="tablist" aria-label="按状态筛选工单">
+            <button class="ct-tab is-on" role="tab" aria-selected="true" data-tab="open">待接单 <b id="nOpen">0</b></button>
+            <button class="ct-tab" role="tab" aria-selected="false" data-tab="doing">处理中 <b id="nDoing">0</b></button>
+            <button class="ct-tab" role="tab" aria-selected="false" data-tab="done">已闭环 <b id="nDone">0</b></button>
+          </div>
+          <div class="ct-list" id="ticketList" aria-live="polite"></div>
+          <p class="ct-empty" id="listEmpty" hidden>这一类目前没有工单。切到「待接单」或点右上角「模拟一条求助」看看流程。</p>
+        </div>
+
+        <aside class="ct-detail" id="detail" aria-live="polite">
+          <div class="ct-detail-empty" id="detailEmpty">
+            <svg class="ico" aria-hidden="true"><use href="#i-alert"/></svg>
+            <p>选一条工单看详情</p>
+            <small>事件时间线、应急信息卡、联系人都会在这里</small>
+          </div>
+          <div id="detailBody" hidden></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 辖区名册 ============ -->
+  <section class="ct-sec ct-sec-alt" id="roster" aria-labelledby="rosterTitle">
+    <div class="wrap">
+      <div class="ct-sec-head">
+        <div>
+          <h2 id="rosterTitle">辖区名册</h2>
+          <p>重点是"谁没人管"：独居、慢病、近期有事件的三类老人，按风险排序，而不是按楼栋。</p>
+        </div>
+        <span class="tag">示例数据</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="ct-table">
+          <caption class="sr-only">辖区老人状态表</caption>
+          <thead>
+            <tr><th scope="col">老人</th><th scope="col">住址</th><th scope="col">风险标签</th><th scope="col">设备</th><th scope="col">最近事件</th><th scope="col">今日用药</th></tr>
+          </thead>
+          <tbody id="rosterBody"></tbody>
+        </table>
+      </div>
+      <p class="ct-hint">名册仅展示值守所需字段；病史细节在应急信息卡里，需授权且留痕查看。</p>
+    </div>
+  </section>
+
+  <!-- ============ 运营指标 ============ -->
+  <section class="ct-sec" id="metrics" aria-labelledby="metricsTitle">
+    <div class="wrap">
+      <div class="ct-sec-head">
+        <div>
+          <h2 id="metricsTitle">运营指标</h2>
+          <p>社区端衡量的是"接得住"：响应时长、到场时长、误报率、设备在线率。</p>
+        </div>
+      </div>
+
+      <div class="ct-metrics-grid">
+        <div class="ct-metric-card">
+          <p class="ct-metric-title">本周工单量（按类型）</p>
+          <ul class="ct-bars" id="barChart"></ul>
+        </div>
+        <div class="ct-metric-card">
+          <p class="ct-metric-title">响应时长分布</p>
+          <ul class="ct-bars" id="barChart2"></ul>
+          <p class="ct-metric-foot">目标：90% 的求助在 60 秒内被接单。当前为演示值。</p>
+        </div>
+        <div class="ct-metric-card ct-metric-narrow">
+          <p class="ct-metric-title">设备在线率</p>
+          <div class="ct-donut" role="img" aria-label="设备在线率 96.4%">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--line)" stroke-width="12"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--primary)" stroke-width="12"
+                      stroke-linecap="round" stroke-dasharray="290 302" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="ct-donut-num"><b>96.4%</b><small>62 / 64 台</small></div>
+          </div>
+          <p class="ct-metric-foot">离线超 2 小时自动建单，由网格员上门确认。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <footer class="footer ct-footer">
+      <div class="footer-bottom">
+        <span>安语 · 社区值守台（演示） · 数据仅存本机</span>
+        <a href="index.html">老人端</a>
+        <a href="about.html">了解方案</a>
+        <a href="docs.html">设计方案全文</a>
+        <span class="nowrap">工单与联动均为模拟，不替代 120</span>
+      </div>
+    </footer>
+  </div>
+</main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script src="assets/console.js"></script>
+</body>
+</html>
