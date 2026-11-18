@@ -49,6 +49,16 @@ def load():
             cfg["llm"]["model"] = os.environ["ANYU_LLM_MODEL"]
         if os.environ.get("ANYU_PORT"):
             cfg["server"]["http_port"] = int(os.environ["ANYU_PORT"])
+        # 托管环境（WorkBuddy 应用 / 容器）只给一个端口，TLS 由反向代理终结
+        if os.environ.get("PORT"):
+            cfg["server"]["http_port"] = int(os.environ["PORT"])
+            cfg["server"]["host"] = "0.0.0.0"
+            cfg["server"]["cloud"] = True
+        if os.environ.get("ANYU_CLOUD") in ("1", "true", "yes"):
+            cfg["server"]["cloud"] = True
+        # 在线环境自带 HTTPS，不要再起自签证书端口
+        if cfg["server"].get("cloud") or os.environ.get("PORT"):
+            cfg["server"]["https_port"] = 0
         # 相对路径统一按 app/ 目录解析
         p = cfg["server"]["db_path"]
         if not os.path.isabs(p):

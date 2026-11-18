@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 · 安语</title>
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="安语">
+</head>
+<body>
+<main class="auth-shell">
+  <div class="auth-card">
+    <div class="brand" style="margin-bottom:1.2rem">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>居家养老语音助手</small></span>
+    </div>
+
+    <h1 id="authTitle">登录</h1>
+    <p class="lead">老人、家属、社区共用一个入口，登录后自动进入对应的界面。</p>
+
+    <div class="tabs" role="tablist" aria-label="登录方式" id="modeTabs">
+      <button class="tab on" type="button" role="tab" aria-selected="true" data-mode="pwd">密码登录</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-mode="sms">短信验证码</button>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="phone">手机号</label>
+        <input id="phone" type="tel" inputmode="numeric" autocomplete="username" placeholder="13800000000" maxlength="11" required>
+      </div>
+
+      <div class="field" id="pwdWrap">
+        <label for="password" id="pwdLabel">密码</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="登录密码">
+      </div>
+
+      <div id="smsWrap" hidden>
+        <div class="row">
+          <div class="field">
+            <label for="captcha">图形验证码</label>
+            <div class="code-row">
+              <input id="captcha" type="text" autocomplete="off" placeholder="4 位字符" maxlength="4">
+              <button type="button" class="captcha-box" id="captchaBox" aria-label="换一张图形验证码">
+                <span class="small muted">加载中…</span>
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="code">短信验证码</label>
+            <div class="code-row">
+              <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="6 位数字" maxlength="6">
+              <button class="btn btn-ghost" type="button" id="sendBtn">获取验证码</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="small" id="loginErr" style="color:var(--danger);min-height:1.2rem;margin-bottom:.4rem"></p>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" id="loginBtn">登录</button>
+    </form>
+
+    <p class="auth-foot" id="doneHint" hidden style="color:var(--primary)">设置已完成，用刚才的手机号登录即可。</p>
+    <p class="auth-foot">
+      <a href="/register.html">注册新账号</a>
+      <span class="muted"> · </span>
+      <a href="#" id="forgotLink">忘记密码</a>
+    </p>
+    <p class="auth-foot">首次部署请打开 <a href="/setup.html">初始化向导</a>；注册需短信验证，虚拟号码无法通过。</p>
+  </div>
+</main>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<script src="/assets/api.js"></script>
+<script src="/assets/login.js"></script>
+</body>
+</html>

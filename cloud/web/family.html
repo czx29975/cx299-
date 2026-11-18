@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家属端 · 安语</title>
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="安语">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>家属端</small></span>
+    </a>
+    <span class="topbar-spacer"></span>
+    <div class="topbar-actions">
+      <div class="who"><b id="whoName">—</b><span id="whoRole">家属端</span></div>
+      <button class="icon-btn" id="bigBtn" type="button" aria-pressed="false" aria-label="放大字号">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M4 9h16"/><path d="M12 9v5"/><path d="M8 21l4-7 4 7"/></svg>
+      </button>
+      <button class="btn btn-ghost btn-sm" type="button" data-logout>退出</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="wrap">
+    <div class="page-head">
+      <div>
+        <p class="small muted" id="eyebrow">家属端</p>
+        <h1 id="headline">正在加载…</h1>
+        <p id="subline">用药、告警、血压和留言都在这里；健康数据是否可见，由老人授权。</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm" type="button" id="notifyBtn">开启通知</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="infoBtn">应急信息卡</button>
+        <button class="btn btn-primary btn-sm" type="button" id="vitalBtn">记录血压</button>
+      </div>
+    </div>
+
+    <div class="stat-grid" id="stats"></div>
+
+    <div class="cols">
+      <div>
+        <section class="card">
+          <div class="card-head">
+            <h2>告警</h2><span class="tag" id="alertCount">—</span>
+          </div>
+          <div id="alertList"></div>
+          <p class="small muted" id="alertNote" style="margin-top:.6rem">紧急求助会同时通知社区；您也可以直接处理或补充说明。</p>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>今日用药</h2><span class="tag" id="medProgress">0 / 0</span></div>
+          <div id="medList"></div>
+          <p class="small muted" style="margin-top:.6rem">家属可以代确认，但会记录操作人。用药计划由家属或药师录入，AI 不推断处方。</p>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>身体不适记录</h2><span class="tag" id="symptomTag">—</span></div>
+          <div id="symptomList"></div>
+          <p class="small muted" style="margin-top:.6rem">老人在老人端说“头疼”“心慌”等，会记在这里，同时生成一条告警。危险症状（胸痛、摔倒起不来）直接按紧急求助处理。</p>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>用药计划</h2>
+            <button class="btn btn-ghost btn-sm" type="button" id="addMedBtn">+ 加一种</button>
+          </div>
+          <div id="planList"></div>
+          <p class="small muted" style="margin-top:.6rem">改计划只影响之后的提醒，已经生成的用药记录不会变。</p>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>授权中心</h2><span class="tag">老人掌握</span></div>
+          <div class="switch-row">
+            <span class="txt">健康数据共享<small>血压、体征与周报</small></span>
+            <label class="switch"><input type="checkbox" data-consent="share_health"><i aria-hidden="true"></i></label>
+          </div>
+          <div class="switch-row">
+            <span class="txt">雷达无感监测<small>不成像，只输出事件</small></span>
+            <label class="switch"><input type="checkbox" data-consent="radar"><i aria-hidden="true"></i></label>
+          </div>
+          <div class="switch-row">
+            <span class="txt">定位与走失防护<small>需单独授权定位设备</small></span>
+            <label class="switch"><input type="checkbox" data-consent="location"><i aria-hidden="true"></i></label>
+          </div>
+          <div class="switch-row">
+            <span class="txt">实时语音监听<small>产品不提供，此处只是边界说明</small></span>
+            <label class="switch"><input type="checkbox" disabled><i aria-hidden="true"></i></label>
+          </div>
+          <p class="small muted" style="margin-top:.6rem">撤回健康数据后，这个页面会立刻看不到血压与依从率。</p>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <h2>紧急联系人</h2>
+            <button class="btn btn-ghost btn-sm" type="button" id="addContactBtn">+ 添加</button>
+          </div>
+          <div id="contactList"></div>
+          <p class="small muted" style="margin-top:.6rem">求助后先给每位联系人发短信；60 秒没人接单就按顺位打电话，
+            第 1 顺位 → 第 2 顺位 → 社区值班。系统只检查号段，虚拟号（170/171 等）加不进来。</p>
+        </section>
+      </div>
+
+      <div>
+        <section class="card">
+          <div class="card-head"><h2>最近 7 天</h2><span class="tag" id="reportTag">—</span></div>
+          <div id="reportBody"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>给妈妈留言</h2><span class="tag">设备会读出来</span></div>
+          <div class="thread" id="thread"></div>
+          <form id="composeForm" style="display:flex;gap:.5rem">
+            <label class="sr-only" for="composeInput">留言内容</label>
+            <input id="composeInput" type="text" autocomplete="off" placeholder="妈，周六上午十点我来看您">
+            <button class="btn btn-primary btn-sm" type="submit">发送</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>账号</h2><span class="tag" id="phoneTag">—</span></div>
+          <form id="pwdForm">
+            <div class="field"><label for="oldPwd">原密码</label><input id="oldPwd" type="password" autocomplete="current-password"></div>
+            <div class="field"><label for="newPwd">新密码</label><input id="newPwd" type="password" autocomplete="new-password" placeholder="至少 6 位"></div>
+            <button class="btn btn-ghost btn-sm" type="submit">修改密码</button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<script src="/assets/api.js"></script>
+<script src="/assets/family.js"></script>
+</body>
+</html>

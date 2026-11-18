@@ -33,7 +33,7 @@ def _public(u):
 
 def _new_session(user_id):
     token = secrets.token_urlsafe(32)
-    expires = (datetime.now() + timedelta(days=SESSION_DAYS)).strftime("%Y-%m-%d %H:%M:%S")
+    expires = (db.now_dt() + timedelta(days=SESSION_DAYS)).strftime("%Y-%m-%d %H:%M:%S")
     db.ex("INSERT INTO sessions(token,user_id,created_at,expires_at) VALUES(?,?,?,?)",
           (token, user_id, db.now(), expires))
     return token

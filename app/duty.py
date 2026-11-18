@@ -222,7 +222,7 @@ def build_plan(alert):
 
 def _seconds_since(ts):
     try:
-        return (datetime.now() - datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")).total_seconds()
+        return (db.now_dt() - datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")).total_seconds()
     except Exception:
         return 0
 

@@ -60,7 +60,7 @@ def _mins(hhmm):
 
 
 def _now_mins():
-    n = datetime.now()
+    n = db.now_dt()
     return n.hour * 60 + n.minute
 
 
@@ -296,7 +296,7 @@ def new_bind_code(elder_id, role="any", hours=72):
     db.ex("UPDATE bind_codes SET used_at=? WHERE elder_id=? AND used_at IS NULL",
           (db.now(), elder_id))
     code = "".join(secrets.choice(BIND_ALPHABET) for _ in range(6))
-    exp = (datetime.now() + timedelta(hours=int(hours or 72))).strftime("%Y-%m-%d %H:%M:%S")
+    exp = (db.now_dt() + timedelta(hours=int(hours or 72))).strftime("%Y-%m-%d %H:%M:%S")
     db.ex("INSERT INTO bind_codes(elder_id,code,role,expires_at,created_at) VALUES(?,?,?,?,?)",
           (elder_id, code, role if role in ("family", "elder") else "any", exp, db.now()))
     return {"ok": True, "code": code, "expires_at": exp, "hours": int(hours or 72)}
@@ -333,7 +333,7 @@ def latest_vital(elder_id):
 
 
 def vital_series(elder_id, days=7):
-    since = (datetime.now() - timedelta(days=days - 1)).strftime("%Y-%m-%d 00:00:00")
+    since = (db.now_dt() - timedelta(days=days - 1)).strftime("%Y-%m-%d 00:00:00")
     return db.q("SELECT sys,dia,pulse,measured_at FROM vitals WHERE elder_id=? AND measured_at>=?"
                 " ORDER BY measured_at", (elder_id, since))
 
@@ -370,7 +370,7 @@ CALL_REPEAT_SEC = 300   # 第 4 级之后每 5 分钟重呼一轮
 
 def _age_seconds(ts):
     try:
-        return (datetime.now() - datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")).total_seconds()
+        return (db.now_dt() - datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")).total_seconds()
     except Exception:
         return 0
 
@@ -499,7 +499,7 @@ def heartbeat_status(elder_id):
     if not row:
         return {"watch": bool(e.get("watch")), "last_seen": None, "minutes": None, "alive": None}
     try:
-        mins = round((datetime.now() - datetime.strptime(
+        mins = round((db.now_dt() - datetime.strptime(
             row["last_seen"], "%Y-%m-%d %H:%M:%S")).total_seconds() / 60.0, 1)
     except Exception:
         mins = None
@@ -658,7 +658,7 @@ def unread_count(elder_id):
 # ---------------- 报表与指标 ----------------
 
 def report(elder_id, days=7):
-    since_day = (datetime.now() - timedelta(days=days - 1)).strftime("%Y-%m-%d")
+    since_day = (db.now_dt() - timedelta(days=days - 1)).strftime("%Y-%m-%d")
     meds = db.q("SELECT id FROM meds WHERE elder_id=? AND active=1", (elder_id,))
     expected = len(meds) * days
     taken_rows = db.q("SELECT COUNT(*) AS n FROM med_logs WHERE elder_id=? AND day>=? AND status='taken'",
@@ -684,7 +684,7 @@ def report(elder_id, days=7):
 
 
 def metrics():
-    since = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d 00:00:00")
+    since = (db.now_dt() - timedelta(days=7)).strftime("%Y-%m-%d 00:00:00")
     rows = db.q("SELECT * FROM alerts WHERE raised_at>=?", (since,))
     by_src = {}
     for a in rows:

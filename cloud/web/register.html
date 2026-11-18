@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>注册 · 安语</title>
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="安语">
+</head>
+<body>
+<main class="auth-shell">
+  <div class="auth-card" style="width:min(100%,40rem)">
+    <div class="brand" style="margin-bottom:1.1rem">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      </span>
+      <span class="brand-text"><strong>安语</strong><small>注册账号</small></span>
+    </div>
+
+    <h1>注册</h1>
+    <p class="lead">手机号要能收到短信、也能接到电话——出事时这是我们叫醒家属的唯一通道。
+      所以必须用短信验证码注册，虚拟号、物联网卡一律不收。</p>
+
+    <div class="notice" id="smsHint" hidden></div>
+
+    <form id="regForm" novalidate>
+      <p class="step-title">1 · 我是谁</p>
+      <div class="seg" role="radiogroup" aria-label="注册身份">
+        <button type="button" class="seg-item on" data-role="family" role="radio" aria-checked="true">
+          <b>家属</b><small>替父母/长辈注册，接收告警</small>
+        </button>
+        <button type="button" class="seg-item" data-role="elder" role="radio" aria-checked="false">
+          <b>老人本人</b><small>自己用，可以语音对话</small>
+        </button>
+      </div>
+
+      <div class="row" style="margin-top:.9rem">
+        <div class="field">
+          <label for="name" id="nameLabel">您的姓名</label>
+          <input id="name" type="text" autocomplete="name" placeholder="李梅" required>
+        </div>
+        <div class="field" id="relationField">
+          <label for="relation">与老人关系</label>
+          <input id="relation" type="text" autocomplete="off" placeholder="女儿 / 儿子 / 侄女">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="phone">手机号</label>
+        <div class="code-row">
+          <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="11 位手机号" maxlength="11" required>
+          <button class="btn btn-ghost" type="button" id="sendBtn">获取验证码</button>
+        </div>
+        <span class="hint">只支持中国大陆移动/联通/电信/广电的实名手机号；170、171、162、165、167 等虚拟号段无法注册。</span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="captcha">图形验证码</label>
+          <div class="code-row">
+            <input id="captcha" type="text" autocomplete="off" placeholder="4 位字符" maxlength="4" required>
+            <button type="button" class="captcha-box" id="captchaBox" aria-label="换一张图形验证码">
+              <span class="small muted">加载中…</span>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="code">短信验证码</label>
+          <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="6 位数字" maxlength="6" required>
+          <span class="hint">5 分钟内有效，错 5 次作废</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="password">设置密码</label>
+          <input id="password" type="password" autocomplete="new-password" placeholder="至少 6 位" required>
+        </div>
+        <div class="field">
+          <label for="password2">再输一次</label>
+          <input id="password2" type="password" autocomplete="new-password" placeholder="确认密码" required>
+        </div>
+      </div>
+
+      <p class="step-title" style="margin-top:1rem">2 · 绑定哪位老人</p>
+      <div class="seg small-seg" role="radiogroup" aria-label="绑定方式">
+        <button type="button" class="seg-item on" data-bind="code" role="radio" aria-checked="true">
+          <b>用绑定码</b><small>社区已经建档，我拿到了 6 位码</small>
+        </button>
+        <button type="button" class="seg-item" data-bind="new" role="radio" aria-checked="false">
+          <b>新建档案</b><small>社区还没建档，我自己填</small>
+        </button>
+      </div>
+
+      <div id="bindCodeWrap" style="margin-top:.9rem">
+        <div class="field">
+          <label for="invite">6 位绑定码</label>
+          <input id="invite" type="text" autocomplete="off" placeholder="例如 7K3M9Q" maxlength="6"
+                 style="text-transform:uppercase;letter-spacing:.3em;font-weight:600">
+          <span class="hint">绑定码由社区端在「成员」里生成，一个码只能用一次</span>
+        </div>
+      </div>
+
+      <div id="bindNewWrap" hidden style="margin-top:.9rem">
+        <div class="row">
+          <div class="field">
+            <label for="elderName">老人姓名</label>
+            <input id="elderName" type="text" autocomplete="off" placeholder="王秀兰">
+          </div>
+          <div class="field">
+            <label for="elderAge">年龄</label>
+            <input id="elderAge" type="number" min="40" max="120" placeholder="78">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="elderDisplay">希望怎么称呼</label>
+            <input id="elderDisplay" type="text" autocomplete="off" placeholder="王阿姨">
+          </div>
+          <div class="field">
+            <label for="elderCommunity">所属社区</label>
+            <input id="elderCommunity" type="text" autocomplete="off" placeholder="建设路社区">
+          </div>
+        </div>
+        <div class="field">
+          <label for="elderAddress">住址</label>
+          <input id="elderAddress" type="text" autocomplete="off" placeholder="XX 区 XX 路 12 号 3 单元 402">
+          <span class="hint">急救上门要靠这个地址，请尽量写清楚楼栋门牌</span>
+        </div>
+      </div>
+
+      <p class="small" id="regErr" style="color:var(--danger);min-height:1.2rem;margin:.8rem 0 .3rem"></p>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" id="regBtn">注册并登录</button>
+    </form>
+
+    <p class="auth-foot">已经有账号？<a href="/login.html">去登录</a></p>
+    <p class="auth-foot">注册即表示同意：紧急联系人手机号会用于告警短信与电话外呼。</p>
+  </div>
+</main>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<script src="/assets/api.js"></script>
+<script src="/assets/register.js"></script>
+</body>
+</html>

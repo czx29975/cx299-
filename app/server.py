@@ -8,6 +8,7 @@ import mimetypes
 import os
 import socket
 import ssl
+import subprocess
 import sys
 import threading
 import time
@@ -23,6 +24,12 @@ import notify
 import sms
 import duty
 import jobs
+try:
+    import net_info            # 线上地址常量集中在这里
+except Exception:              # 上线包里没带这个文件时也不影响启动
+    class _NetInfo:
+        ONLINE_URL = os.environ.get("ANYU_ONLINE_URL", "https://anyu-elder-care.app.workbuddy.host/")
+    net_info = _NetInfo()
 import service
 
 mimetypes.add_type("application/manifest+json", ".webmanifest")
@@ -893,11 +900,30 @@ def lan_ips():
     try:
         for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
             ip = info[4][0]
-            if not ip.startswith("127."):
+            if not ip.startswith(("127.", "169.254.")):
                 ips.add(ip)
     except Exception:
         pass
     return sorted(ips)
+
+
+def cert_sans(cert_path):
+    """读出证书里包含的 IP/DNS。没有 openssl 就返回 None，跳过检查。"""
+    try:
+        out = subprocess.run(["openssl", "x509", "-in", cert_path, "-noout", "-text"],
+                             capture_output=True, timeout=8)
+        text = out.stdout.decode("utf-8", "replace")
+        if "Subject Alternative Name" not in text:
+            return set()
+        tail = text.split("Subject Alternative Name", 1)[1].split("\n", 2)[1]
+        parts = [p.strip() for p in tail.replace("\n", " ").split(",")]
+        names = set()
+        for p in parts:
+            if p.upper().startswith(("IP ADDRESS:", "DNS:")):
+                names.add(p.split(":", 1)[1].strip().lower())
+        return names
+    except Exception:
+        return None
 
 
 def main():
@@ -907,7 +933,8 @@ def main():
 
     host = config.get()["server"]["host"]
     http_port = int(config.get()["server"]["http_port"])
-    https_port = int(config.get()["server"]["https_port"])
+    https_port = int(config.get()["server"].get("https_port") or 0)
+    cloud = bool(config.get()["server"].get("cloud"))
 
     httpd = ThreadingHTTPServer((host, http_port), Handler)
     httpd.daemon_threads = True
@@ -915,7 +942,7 @@ def main():
     httpsd = None
     cert = os.path.join(ROOT, "certs", "anyu.crt")
     key = os.path.join(ROOT, "certs", "anyu.key")
-    if os.path.exists(cert) and os.path.exists(key):
+    if not cloud and https_port and os.path.exists(cert) and os.path.exists(key):
         try:
             ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
             ctx.load_cert_chain(cert, key)
@@ -925,21 +952,54 @@ def main():
         except Exception as ex:
             log("[https] 启动失败：%s" % ex)
 
+    if cloud:
+        log("")
+        log("  安语 · 居家养老语音助手  （托管模式）")
+        log("  监听：0.0.0.0:%d ，HTTPS 由反向代理处理" % http_port)
+        log("  数据库：%s" % config.db_path())
+        log("  初始化：%s" % ("已完成，请登录" if db.has_users() else "首次打开进入设置向导"))
+        log("")
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            log("\n正在关闭……")
+        finally:
+            jobs.stop()
+            httpd.server_close()
+        return
+
+    ips = lan_ips()
+    hostname = socket.gethostname()
+
     log("")
     log("  安语 · 居家养老语音助手")
     log("  ----------------------------------------")
+    log("  线上：  %s" % net_info.ONLINE_URL)
     log("  本机：  http://127.0.0.1:%d/" % http_port)
-    for ip in lan_ips():
+    for ip in ips:
         log("  局域网：http://%s:%d/" % (ip, http_port))
     if httpsd:
-        for ip in lan_ips():
-            log("  手机：  https://%s:%d/   （自签名证书，需点继续访问）" % (ip, https_port))
+        for ip in ips:
+            log("  手机：  https://%s:%d/   （自签名证书，点“继续访问”）" % (ip, https_port))
+        log("  主机名：https://%s:%d/   （IP 变了用这个，局域网内可直接解析）" %
+            (hostname.lower(), https_port))
     else:
         log("  提示：  未找到 app/certs 证书，手机端麦克风需要 HTTPS（见 README）")
     log("  数据库：%s" % config.db_path())
     log("  初始化：%s" % ("已完成，请登录" if db.has_users() else "首次打开会自动进入设置向导"))
     log("")
 
+    # 证书与当前 IP 对不上时，手机浏览器会报"证书名称不匹配"，提前说清楚
+    sans = cert_sans(cert) if httpsd else None
+    if sans is not None:
+        missing = [ip for ip in ips if ip.lower() not in sans]
+        if missing:
+            log("  ! 证书里没有 %s，手机 https 会提示证书错误。" % "、".join(missing))
+            log("    在 app 目录执行一次：python make_cert.py 然后重启服务。")
+            log("")
+
+    log("  别的电脑/手机打不开？先以管理员身份运行根目录的「允许局域网访问.cmd」")
+    log("")
     if httpsd:
         threading.Thread(target=httpsd.serve_forever, name="https", daemon=True).start()
     try:

@@ -413,7 +413,7 @@ def local_intent(elder_id, text):
         return "还没登记家人的电话，让家属在后台补一下吧。", r
 
     if re.search(r"几点|几号|星期", t):
-        n = datetime.now()
+        n = db.now_dt()
         wd = "一二三四五六日"[n.weekday()]
         return "现在 %d 点 %d 分，%d 月 %d 日，星期%s。" % (n.hour, n.minute, n.month, n.day, wd), none
 

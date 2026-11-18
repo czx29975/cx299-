@@ -3,7 +3,7 @@ import os
 import sqlite3
 import threading
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 import config
 
@@ -273,12 +273,24 @@ MIGRATIONS = [
 ]
 
 
+# 托管容器基本都跑 UTC，而全系统的时间都是"不带时区的东八区字符串"。
+# 不管系统时区是什么，业务时间一律按 +08:00 算，否则用药提醒会整体偏 8 小时。
+_CLOUD = bool(os.environ.get("PORT")) or os.environ.get("ANYU_CLOUD") in ("1", "true", "yes")
+_BEIJING = timezone(timedelta(hours=8))
+
+
+def now_dt():
+    if _CLOUD:
+        return datetime.now(_BEIJING).replace(tzinfo=None)
+    return datetime.now()
+
+
 def now():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return now_dt().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def today():
-    return datetime.now().strftime("%Y-%m-%d")
+    return now_dt().strftime("%Y-%m-%d")
 
 
 def init():

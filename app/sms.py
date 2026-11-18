@@ -16,6 +16,7 @@
 import hashlib
 import hmac
 import json
+import os
 import random
 import re
 import secrets
@@ -149,7 +150,7 @@ def issue_captcha():
     """生成图形码。答案只存在服务端，前端拿到的是一张 SVG。"""
     code = "".join(secrets.choice(ALPHABET) for _ in range(4))
     token = secrets.token_urlsafe(18)
-    now = datetime.now()
+    now = db.now_dt()
     db.ex("INSERT INTO captchas(token,answer,created_at,expires_at) VALUES(?,?,?,?)",
           (token, code,
            now.strftime("%Y-%m-%d %H:%M:%S"),
@@ -185,16 +186,16 @@ def rate_limit(phone, ip):
     r = db.q1("SELECT created_at FROM sms_codes WHERE phone=? ORDER BY id DESC LIMIT 1", (phone,))
     if r:
         try:
-            gap = (datetime.now() - datetime.strptime(r["created_at"], "%Y-%m-%d %H:%M:%S")).total_seconds()
+            gap = (db.now_dt() - datetime.strptime(r["created_at"], "%Y-%m-%d %H:%M:%S")).total_seconds()
         except Exception:
             gap = 999
         if gap < RESEND_GAP:
             return False, int(RESEND_GAP - gap)
-    day_ago = (datetime.now() - timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")
+    day_ago = (db.now_dt() - timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")
     if _count("SELECT COUNT(*) n FROM sms_codes WHERE phone=? AND created_at>=?", (phone, day_ago)) >= PHONE_DAY_LIMIT:
         return False, 0
     if ip:
-        hour_ago = (datetime.now() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+        hour_ago = (db.now_dt() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
         if _count("SELECT COUNT(*) n FROM sms_codes WHERE ip=? AND created_at>=?", (ip, hour_ago)) >= IP_HOUR_LIMIT:
             return False, 0
         if _count("SELECT COUNT(*) n FROM sms_codes WHERE ip=? AND created_at>=?", (ip, day_ago)) >= IP_DAY_LIMIT:
@@ -276,16 +277,28 @@ def provider_ready():
     return False
 
 
+def _public_mode():
+    """是否运行在公网托管环境（此时禁止把验证码回显到页面）。"""
+    return bool(os.environ.get("PORT")) or os.environ.get("ANYU_CLOUD") in ("1", "true", "yes")
+
+
 def status():
     c = config()
+    ready = provider_ready()
+    if ready:
+        mode = "gateway"
+    elif _public_mode():
+        mode = "none"      # 公网环境没配网关：不发码，而不是假装自测模式
+    else:
+        mode = "console"
     return {
         "provider": c["provider"],
         "provider_label": GATEWAYS.get(c["provider"], "未配置"),
-        "ready": provider_ready(),
+        "ready": ready,
         "check_online": c["check_online"],
-        "mode": "gateway" if provider_ready() else "console",
+        "mode": mode,
         "sent_24h": _count("SELECT COUNT(*) n FROM sms_sends WHERE created_at>=?",
-                           ((datetime.now() - timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S"),)),
+                           ((db.now_dt() - timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S"),)),
     }
 
 
@@ -458,7 +471,7 @@ def send_code(phone, scene, ip=""):
 
     code = "".join(secrets.choice("0123456789") for _ in range(CODE_LEN))
     h = hashlib.sha256(code.encode()).hexdigest()
-    now = datetime.now()
+    now = db.now_dt()
     db.ex("INSERT INTO sms_codes(phone,scene,code_hash,created_at,expires_at,attempts,ip)"
           " VALUES(?,?,?,?,?,0,?)",
           (phone, scene, h, now.strftime("%Y-%m-%d %H:%M:%S"),
@@ -473,6 +486,13 @@ def send_code(phone, scene, ip=""):
                 "message": "验证码已发送到 %s，5 分钟内有效" % _mask(phone)}
 
     # 没配网关：码只打到服务端窗口，方便本机自测；界面会明确提示"未接入网关"
+    if _public_mode():
+        # 公网环境下绝不能把验证码回给页面，否则谁都能用任意号码注册
+        print("[sms] 托管环境未配置网关，拒绝下发验证码（%s）" % _mask(phone), flush=True)
+        _log_send(phone, scene, "console", False, "no-gateway",
+                  "托管环境未配置短信网关，已拒绝下发", ip)
+        return {"ok": False, "channel": "none",
+                "error": "系统还没接入短信网关，暂时收不到验证码。请用密码登录，或联系社区协助。"}
     print("[sms] 未配置短信网关，%s 的%s验证码：%s" % (_mask(phone), SCENES[scene], code), flush=True)
     _log_send(phone, scene, "console", True, "console", "未配置网关，验证码输出到服务端窗口", ip)
     return {"ok": True, "channel": "console", "ttl": CODE_TTL, "dev_code": code,

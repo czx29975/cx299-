@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>安语 · 居家养老语音助手</title>
+<meta name="description" content="安语 · 居家养老语音助手：老人端、家属端、社区值守台三个界面，语音对话、用药提醒、紧急求助与逐级外呼。在线版 https://anyu-elder-care.app.workbuddy.host/ 可直接使用。">
+<meta name="theme-color" content="#FBF8F2">
+<link rel="icon" href="app/web/favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --paper: #FBF8F2; --card: #FFFFFF; --ink: #1B2725; --ink-2: #45534F; --ink-3: #77827D;
+    --line: #E4DCCC; --line-strong: #CFC3AC; --primary: #2C6653; --primary-soft: #E8F1EB;
+    --primary-tint: #F2F8F4; --accent: #A9531F; --accent-soft: #F8EADF; --danger: #A6362B;
+    --gold: #9A7326; --gold-soft: #F6EEDC;
+    --font: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", system-ui, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  /* 长域名/长链接在窄屏会把页面撑出横向滚动条，强制允许断行 */
+  a, code, .lead, .notice, li, p { overflow-wrap: anywhere; }
+  code { word-break: break-word; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font);
+    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(70% 45% at 8% 0%, var(--primary-tint) 0%, transparent 60%),
+      radial-gradient(60% 40% at 100% 4%, var(--accent-soft) 0%, transparent 55%);
+    background-repeat: no-repeat;
+  }
+  .wrap { width: 100%; max-width: 60rem; margin: 0 auto; padding: 2.2rem 1.2rem 4rem; }
+  .brand { display: flex; align-items: center; gap: .65rem; margin-bottom: 2rem; }
+  .brand-mark {
+    width: 2.4rem; height: 2.4rem; border-radius: 30%; background: var(--primary);
+    color: #fff; display: grid; place-items: center; flex: none;
+  }
+  .brand-mark svg { width: 1.35rem; height: 1.35rem; }
+  .brand-text strong { display: block; font-size: 1.05rem; letter-spacing: .02em; }
+  .brand-text small { color: var(--ink-3); font-size: .8rem; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; margin: 0 0 .6rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.02rem; margin: 0 0 .5rem; }
+  p { margin: 0 0 .7rem; }
+  .lead { color: var(--ink-2); max-width: 42rem; }
+  .muted { color: var(--ink-3); }
+  .small { font-size: .84rem; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .notice {
+    border: 1px solid var(--gold-soft); background: var(--gold-soft); color: #6B4F14;
+    border-radius: 14px; padding: .9rem 1rem; margin: 1.4rem 0 1.8rem; font-size: .92rem;
+  }
+  .notice b { display: block; margin-bottom: .2rem; color: var(--gold); }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 1.3rem 1.35rem; box-shadow: 0 16px 36px -26px rgba(27, 39, 37, .35);
+  }
+  .card .tag {
+    display: inline-block; font-size: .72rem; padding: .1rem .5rem; border-radius: 999px;
+    background: var(--primary-soft); color: var(--primary); margin-bottom: .5rem;
+  }
+  .card .tag.warn { background: var(--accent-soft); color: var(--accent); }
+  ol, ul { margin: .5rem 0 0; padding-left: 1.2rem; }
+  li { margin-bottom: .35rem; }
+  code {
+    background: var(--primary-tint); border: 1px solid var(--primary-soft);
+    border-radius: 6px; padding: .05rem .35rem; font-size: .87em;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .4rem; font-weight: 600;
+    padding: .6rem 1rem; border-radius: 10px; border: 1px solid var(--primary);
+    background: var(--primary); color: #fff; margin-top: .6rem;
+  }
+  .btn:hover { text-decoration: none; background: #1E4B3D; }
+  .btn.ghost { background: transparent; color: var(--primary); }
+  .btn.ghost:hover { background: var(--primary-soft); }
+
+  .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-top: 1.1rem; }
+  @media (max-width: 760px) { .roles { grid-template-columns: 1fr; } }
+  .role { border: 1px solid var(--line); border-radius: 12px; padding: .75rem .85rem; background: var(--paper); }
+  .role b { display: block; font-size: .95rem; }
+  .role span { font-size: .82rem; color: var(--ink-3); }
+
+  .foot { margin-top: 2.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-size: .82rem; color: var(--ink-3); }
+  .links { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .6rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+    </span>
+    <span class="brand-text"><strong>安语</strong><small>居家养老语音助手</small></span>
+  </div>
+
+  <h1>安语已经在线跑起来了，打开就能用</h1>
+  <p class="lead">在线地址：<a href="https://anyu-elder-care.app.workbuddy.host/" target="_blank" rel="noopener"><b>anyu-elder-care.app.workbuddy.host</b></a>
+    ——老人端、家属端、社区值守台三个界面，共用一个 Python 后端和一份 SQLite 数据，登录、工单、用药、短信、外呼都是真的在跑。</p>
+
+  <div class="notice">
+    <b>使用完整线上访问链接</b>
+    如果实例启用了分享码，请使用部署方提供的完整链接；分享码不会保存在此页面或仓库中。
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <span class="tag">方式一 · 推荐</span>
+      <h2>直接打开在线版</h2>
+      <ol>
+        <li>使用部署方提供的完整链接，或点下面的按钮打开线上地址；</li>
+        <li>用手机号 + 密码登录，选对应角色的界面；</li>
+        <li>手机可「添加到主屏幕」，全屏使用、没有地址栏。</li>
+      </ol>
+      <a class="btn" href="https://anyu-elder-care.app.workbuddy.host/" target="_blank" rel="noopener">打开在线版 →</a>
+      <p class="small muted" style="margin-top:.6rem">演示环境请使用管理员提供的账号登录。</p>
+    </section>
+
+    <section class="card">
+      <span class="tag warn">方式二 · 数据只留本机</span>
+      <h2>在自己电脑上跑</h2>
+      <ol>
+        <li>下载这个仓库（GitHub 上点 <b>Code → Download ZIP</b>，解压）；</li>
+        <li>确认装了 <b>Python 3.10+</b>，双击根目录的 <code>启动安语.cmd</code>；</li>
+        <li>浏览器打开 <code>http://127.0.0.1:8080/</code>，用账号登录。</li>
+      </ol>
+      <p class="small muted" style="margin-top:.6rem">首次启动会进入设置向导，建老人档案和三个账号；数据全部留在本机，不经过任何服务器。</p>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>三个界面，一套后端</h2>
+    <div class="roles">
+      <div class="role"><b>老人端</b><span>语音/文字对话、确认吃药、记血压、一键求助、守护聆听</span></div>
+      <div class="role"><b>家属端</b><span>看告警与周报、代确认用药、留言、紧急联系人、授权管理</span></div>
+      <div class="role"><b>社区值守台</b><span>工单接单/到场/结案、声光报警、逐级外呼、AI 值守</span></div>
+    </div>
+    <p class="small muted" style="margin-top:.9rem">技术栈：Python 3 标准库 HTTP 服务 + SQLite，零第三方依赖；前端原生 HTML/CSS/JS，可「添加到主屏幕」当 App 用。</p>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>为什么不能直接放 GitHub Pages</h2>
+    <p class="small">GitHub Pages 只发静态文件。而安语的登录、工单、用药记录、短信验证码、电话外呼，全部由 <code>app/server.py</code> + SQLite 在服务端完成——静态托管没有后端，页面打不开、<code>/api/*</code> 一律 404。所以在线版是部署在能跑 Python 的托管环境里的，不是静态页。</p>
+    <p class="small" style="margin-top:.6rem">只想先看看界面长什么样：仓库里的 <code>website/</code> 是早期静态演示页（纯前端、数据写死，不是本系统）。</p>
+    <a class="btn ghost" href="website/index.html">打开静态演示页 →</a>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>线上版本怎么更新</h2>
+    <ul class="small">
+      <li>改完 <code>app/</code> 里的代码，把改动同步进上线包 <code>cloud/</code>；</li>
+      <li>重新发布，<b>分享链接不变</b>，内容被覆盖；</li>
+      <li>在线实例会读环境变量 <code>PORT</code> 并绑 <code>0.0.0.0</code>，HTTPS 由平台代理负责，容器时区按东八区处理。</li>
+    </ul>
+    <p class="small muted" style="margin-top:.6rem">线上是独立的一份数据：和本机那份不互通，线上新增的内容不会回流到本机。正式给家人前务必改掉演示密码。</p>
+  </section>
+
+  <p class="foot">
+    在线版：<a href="https://anyu-elder-care.app.workbuddy.host/" target="_blank" rel="noopener">anyu-elder-care.app.workbuddy.host</a>
+    ｜ 源码在 <code>app/</code>，本机运行需要 Python 3。
+    <span class="links">
+      <a href="README.md">README（完整说明）</a>
+      <a href="app/web/login.html">登录页（需服务端，静态打开会 404）</a>
+      <a href="AI语音养老服务助手-功能设计方案.docx">功能设计方案 .docx</a>
+    </span>
+  </p>
+
+</main>
+</body>
+</html>

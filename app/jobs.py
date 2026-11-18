@@ -26,7 +26,7 @@ HB_FROM, HB_TO = 7, 23 # 只在 7:00–23:00 检查设备
 def _seconds_since(ts):
     try:
         t0 = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
-        return (datetime.now() - t0).total_seconds()
+        return (db.now_dt() - t0).total_seconds()
     except Exception:
         return 0
 
@@ -95,7 +95,7 @@ def scan_inactivity():
 
     独居老人最危险的不是喊救命，而是喊不出来。这条只在白天生效，每人每天最多一次。
     """
-    now = datetime.now()
+    now = db.now_dt()
     if not (INACTIVE_FROM <= now.hour < INACTIVE_TO):
         return
     for e in db.q("SELECT id, display, name FROM elders"):
@@ -145,7 +145,7 @@ def scan_duty():
 
 def scan_heartbeat():
     """设备失联：老人端在开着却没心跳，说明设备/网络可能出问题，这时连求救都发不出来。"""
-    now = datetime.now()
+    now = db.now_dt()
     if not (HB_FROM <= now.hour < HB_TO):
         return
     for e in db.q("SELECT id, display, name FROM elders WHERE watch=1"):
