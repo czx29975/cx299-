@@ -37,10 +37,17 @@
 
   /* ---------- 模式切换 ---------- */
 
+  var SUBS = {
+    pwd: '老人、家属、社区共用一个入口',
+    sms: '不带密码也能进：手机收一条验证码',
+    reset: '先验证手机号，再设一个新密码'
+  };
+
   function applyMode(m) {
     mode = m;
     var title = { pwd: '登录', sms: '短信登录', reset: '重置密码' }[m];
     $('#authTitle').textContent = title;
+    if ($('#authSub')) { $('#authSub').textContent = SUBS[m] || SUBS.pwd; }
     $('#loginBtn').textContent = m === 'reset' ? '重置并登录' : '登录';
     $('#pwdLabel').textContent = m === 'reset' ? '新密码' : '密码';
     $('#password').setAttribute('autocomplete', m === 'reset' ? 'new-password' : 'current-password');
@@ -69,6 +76,22 @@
     applyMode('reset');
     toast('输入手机号，收验证码后直接设新密码');
   });
+
+  /* ---------- 密码显示 / 隐藏 ---------- */
+
+  (function () {
+    var eye = $('#eyeBtn');
+    var pwd = $('#password');
+    if (!eye || !pwd) { return; }
+    eye.addEventListener('click', function () {
+      var show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      eye.classList.toggle('on', show);
+      eye.setAttribute('aria-pressed', show ? 'true' : 'false');
+      eye.setAttribute('aria-label', show ? '隐藏密码' : '显示密码');
+      try { pwd.focus({ preventScroll: true }); } catch (e) { pwd.focus(); }
+    });
+  })();
 
   /* ---------- 发验证码 ---------- */
 

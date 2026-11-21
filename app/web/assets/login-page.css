@@ -1,0 +1,357 @@
+/* =========================================================
+   登录页 · 独立样式（只作用于 login.html，不影响其他页面）
+   左：深松绿品牌区（屋檐 + 声波）｜右：米白表单
+   ========================================================= */
+
+.login-body { background: var(--paper); }
+
+.login-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+}
+
+/* ---------------- 左侧品牌区 ---------------- */
+
+.login-brand {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.6rem, 3.4vw, 3.2rem);
+  color: #F6EFE1;
+  background: linear-gradient(155deg, #3A836C 0%, #2C6653 40%, #1A4235 100%);
+}
+
+/* 左上柔光 */
+.login-brand::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 80%;
+  height: 90%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .20), transparent 72%);
+  pointer-events: none;
+}
+
+/* 右下声波扩散（纯装饰） */
+.lb-ripple {
+  position: absolute;
+  right: -7rem;
+  bottom: -7rem;
+  width: 24rem;
+  height: 24rem;
+  pointer-events: none;
+}
+.lb-ripple i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(246, 239, 225, .16);
+  border-radius: 50%;
+}
+.lb-ripple i:nth-child(2) { inset: 20%; border-color: rgba(246, 239, 225, .13); }
+.lb-ripple i:nth-child(3) { inset: 40%; border-color: rgba(232, 192, 122, .22); }
+
+.lb-top, .lb-main, .lb-foot { position: relative; z-index: 1; }
+
+.lb-top {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+.lb-logo {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  color: #F6EFE1;
+}
+.lb-name {
+  display: grid;
+  line-height: 1.15;
+  font-size: 1.24rem;
+  font-weight: 650;
+  letter-spacing: .08em;
+}
+.lb-name small {
+  font-size: .7rem;
+  font-weight: 400;
+  letter-spacing: .12em;
+  opacity: .62;
+  margin-top: .2rem;
+}
+
+.lb-main { max-width: 26rem; }
+
+.lb-title {
+  font-size: clamp(1.85rem, 3.1vw, 2.7rem);
+  line-height: 1.28;
+  letter-spacing: -.015em;
+  font-weight: 650;
+  margin-bottom: .9rem;
+}
+.lb-sub {
+  font-size: .94rem;
+  line-height: 1.75;
+  opacity: .78;
+  margin-bottom: 2rem;
+}
+
+.lb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.lb-list li {
+  position: relative;
+  padding-left: 1.45rem;
+}
+.lb-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .5rem;
+  width: .44rem;
+  height: .44rem;
+  border-radius: 50%;
+  background: #E8C07A;
+  box-shadow: 0 0 0 4px rgba(232, 192, 122, .14);
+}
+.lb-list b {
+  display: block;
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+.lb-list span {
+  display: block;
+  font-size: .82rem;
+  line-height: 1.6;
+  opacity: .68;
+  margin-top: .1rem;
+}
+
+.lb-foot {
+  font-size: .74rem;
+  letter-spacing: .16em;
+  opacity: .5;
+}
+
+/* ---------------- 右侧表单区 ---------------- */
+
+.login-form-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  padding: clamp(1.4rem, 4vw, 3rem) clamp(1rem, 3vw, 2.4rem);
+  background:
+    radial-gradient(70% 50% at 100% 0%, var(--primary-tint) 0%, transparent 58%),
+    var(--paper);
+}
+
+.login-card {
+  width: min(100%, 26.5rem);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(1.4rem, 3.4vw, 2.1rem);
+  box-shadow: 0 1px 2px rgba(27, 39, 37, .04), 0 26px 60px -34px rgba(27, 39, 37, .34);
+}
+
+.lc-head { margin-bottom: 1.2rem; }
+.lc-head h1 {
+  font-size: 1.55rem;
+  margin-bottom: .3rem;
+}
+.lc-sub {
+  font-size: .86rem;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* 登录方式：胶囊分段 */
+.login-card .tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .25rem;
+  border: 0;
+  margin-bottom: 1.15rem;
+  padding: .26rem;
+  border-radius: 12px;
+  background: var(--paper-3);
+}
+.login-card .tab {
+  padding: .52rem .5rem;
+  border-radius: 9px;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  box-shadow: none;
+  transition: background .15s, color .15s;
+}
+.login-card .tab:hover { background: rgba(255, 255, 255, .6); }
+.login-card .tab.on {
+  background: var(--card);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(27, 39, 37, .16);
+}
+.login-card .tab.on:hover { background: var(--card); }
+
+/* 带图标的输入框 */
+.lf { position: relative; }
+.lf .lf-ico {
+  position: absolute;
+  left: .74rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.02rem;
+  height: 1.02rem;
+  color: var(--ink-3);
+  pointer-events: none;
+  transition: color .15s;
+}
+.lf:focus-within .lf-ico { color: var(--primary); }
+.lf input.has-ico { padding-left: 2.3rem; }
+.lf input.has-eye { padding-right: 2.6rem; }
+
+.lf-eye {
+  position: absolute;
+  right: .35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.lf-eye:hover { background: var(--paper-2); color: var(--ink-2); }
+.lf-eye svg { width: 1.05rem; height: 1.05rem; }
+/* 已显示密码：眼睛上加一道斜线 */
+.lf-eye.on { color: var(--primary); }
+.lf-eye.on::after {
+  content: '';
+  position: absolute;
+  width: 1.3rem;
+  height: 1.6px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: rotate(-40deg);
+}
+
+/* 图形验证码：容器宽度含边框，SVG 自适应，避免右侧字符被裁掉 */
+.login-card .captcha-box { min-width: 8rem; }
+.login-card .captcha-box svg { display: block; width: 100%; height: auto; }
+
+/* 表单里的错误提示 */
+.lc-err {
+  min-height: 1.25rem;
+  margin: 0 0 .55rem;
+  font-size: .82rem;
+  color: var(--danger);
+  line-height: 1.5;
+}
+
+/* 主按钮 */
+.login-card .btn-primary.btn-lg {
+  background: linear-gradient(180deg, #35795F 0%, var(--primary) 62%, #245544 100%);
+  border-color: #23513F;
+  box-shadow: 0 12px 26px -16px rgba(44, 102, 83, .95);
+  letter-spacing: .06em;
+  font-weight: 600;
+}
+.login-card .btn-primary.btn-lg:hover { filter: brightness(1.05); }
+.login-card .btn-primary.btn-lg[disabled] { filter: none; opacity: .6; }
+
+/* 底部链接 */
+.lc-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  margin-top: 1.15rem;
+  font-size: .86rem;
+}
+.lc-links a { font-weight: 550; }
+.lc-links a:hover { text-decoration: underline; }
+.lc-links i {
+  width: 1px;
+  height: .8rem;
+  background: var(--line-strong);
+  display: inline-block;
+}
+
+.login-card .auth-foot {
+  margin-top: .85rem;
+  font-size: .78rem;
+  color: var(--ink-3);
+  text-align: center;
+  line-height: 1.65;
+}
+.login-card #doneHint {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.lc-note {
+  width: min(100%, 26.5rem);
+  font-size: .74rem;
+  line-height: 1.7;
+  color: var(--ink-3);
+  text-align: center;
+  opacity: .85;
+}
+
+/* ---------------- 窄屏 ---------------- */
+
+@media (max-width: 900px) {
+  .login-page { grid-template-columns: 1fr; }
+
+  .login-brand {
+    gap: .6rem;
+    padding: 1.15rem 1.25rem 1.5rem;
+    border-radius: 0 0 24px 24px;
+    justify-content: flex-start;
+  }
+  .lb-ripple { display: none; }
+  .lb-title {
+    font-size: 1.45rem;
+    line-height: 1.32;
+    margin: .75rem 0 0;
+  }
+  .lb-sub, .lb-list, .lb-foot { display: none; }
+
+  .login-form-side {
+    padding: 0 1rem 1.8rem;
+    justify-content: flex-start;
+    background: var(--paper);
+  }
+  .login-card {
+    margin-top: -.7rem;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+@media (max-width: 420px) {
+  .login-card { padding: 1.15rem 1.05rem 1.3rem; border-radius: 16px; }
+  .lc-head h1 { font-size: 1.35rem; }
+}
+
+/* 高对比模式下品牌区去掉渐变，保证可读 */
+html.hc .login-brand {
+  background: #0A2B22;
+  color: #fff;
+}
+html.hc .lb-list li::before { background: #FFD98A; }

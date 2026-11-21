@@ -415,6 +415,7 @@ AI语音养老服务助手/
 ├─ 允许局域网访问.cmd      # 管理员运行，放行 8080/8443
 ├─ cloud/                  # 线上发布包（部署到 workbuddy.host 的那份）
 ├─ tools/cloudflared.exe   # 隧道程序
+├─ logo.svg / logo.png     # 品牌标识：屋檐（家）+ 声波（说话），中间金色一柱是人
 ├─ app/
 │  ├─ server.py            # HTTP/HTTPS 服务、路由、权限
 │  ├─ auth.py              # 密码、会话、注册（含短信校验）
@@ -431,6 +432,9 @@ AI语音养老服务助手/
 │  ├─ certs/               # 自签名证书
 │  ├─ data/anyu.db         # 数据库（首次启动自动创建）
 │  └─ web/                 # 前端页面与样式（login/register/elder/family/console）
+│     ├─ assets/login-page.css  # 登录页专属样式（左右双栏，不影响其他页）
+│     ├─ assets/logo.svg        # 应用内图标（64 栅格，透明版线条在登录页内联）
+│     └─ favicon.svg            # 浏览器标签图标（32 栅格简化版）
 └─ website/                # 早期的产品方案展示页与原型（非本系统，可删）
 ```
 

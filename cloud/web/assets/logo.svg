@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="安语">
+  <defs>
+    <linearGradient id="anyuBg" x1="10" y1="4" x2="54" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3C8269"/>
+      <stop offset=".55" stop-color="#2C6653"/>
+      <stop offset="1" stop-color="#1B4537"/>
+    </linearGradient>
+    <linearGradient id="anyuGold" x1="0" y1="32" x2="0" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F2D49B"/>
+      <stop offset="1" stop-color="#D9A855"/>
+    </linearGradient>
+    <radialGradient id="anyuGlow" cx=".28" cy=".18" r=".75">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="18" fill="url(#anyuBg)"/>
+  <rect width="64" height="64" rx="18" fill="url(#anyuGlow)"/>
+
+  <!-- 屋檐：家 -->
+  <path d="M13.4 28.7 32 14.7 50.6 28.7"
+        fill="none" stroke="#F6EFE1" stroke-width="3.6"
+        stroke-linecap="round" stroke-linejoin="round" opacity=".96"/>
+
+  <!-- 声波：说话。中间一柱为暖金色，象征被牵挂的人 -->
+  <g stroke-linecap="round" stroke-width="4.4">
+    <path d="M21.3 38.7v10.6" stroke="#F6EFE1" opacity=".78"/>
+    <path d="M32 34v20" stroke="url(#anyuGold)"/>
+    <path d="M42.7 38.7v10.6" stroke="#F6EFE1" opacity=".78"/>
+  </g>
+</svg>

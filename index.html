@@ -30,10 +30,10 @@
   .wrap { width: 100%; max-width: 60rem; margin: 0 auto; padding: 2.2rem 1.2rem 4rem; }
   .brand { display: flex; align-items: center; gap: .65rem; margin-bottom: 2rem; }
   .brand-mark {
-    width: 2.4rem; height: 2.4rem; border-radius: 30%; background: var(--primary);
-    color: #fff; display: grid; place-items: center; flex: none;
+    width: 2.4rem; height: 2.4rem; flex: none;
+    display: grid; place-items: center;
   }
-  .brand-mark svg { width: 1.35rem; height: 1.35rem; }
+  .brand-mark svg { width: 100%; height: 100%; display: block; }
   .brand-text strong { display: block; font-size: 1.05rem; letter-spacing: .02em; }
   .brand-text small { color: var(--ink-3); font-size: .8rem; }
   h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; margin: 0 0 .6rem; letter-spacing: -.01em; }
@@ -92,7 +92,24 @@
 
   <div class="brand">
     <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9 10.5h.01M12 10.5h.01M15 10.5h.01"/></svg>
+      <svg viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="hb" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#3C8269"/><stop offset="1" stop-color="#1B4537"/>
+          </linearGradient>
+          <linearGradient id="hg" x1="0" y1="34" x2="0" y2="54" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#F2D49B"/><stop offset="1" stop-color="#D9A855"/>
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="18" fill="url(#hb)"/>
+        <path d="M13.4 28.7 32 14.7 50.6 28.7" fill="none" stroke="#F6EFE1" stroke-width="3.6"
+              stroke-linecap="round" stroke-linejoin="round" opacity=".96"/>
+        <g stroke-linecap="round" stroke-width="4.4">
+          <path d="M21.3 38.7v10.6" stroke="#F6EFE1" opacity=".78"/>
+          <path d="M32 34v20" stroke="url(#hg)"/>
+          <path d="M42.7 38.7v10.6" stroke="#F6EFE1" opacity=".78"/>
+        </g>
+      </svg>
     </span>
     <span class="brand-text"><strong>安语</strong><small>居家养老语音助手</small></span>
   </div>
@@ -102,8 +119,8 @@
     ——老人端、家属端、社区值守台三个界面，共用一个 Python 后端和一份 SQLite 数据，登录、工单、用药、短信、外呼都是真的在跑。</p>
 
   <div class="notice">
-    <b>使用完整线上访问链接</b>
-    如果实例启用了分享码，请使用部署方提供的完整链接；分享码不会保存在此页面或仓库中。
+    <b>链接要带分享码</b>
+    末尾的 <code>?sharecode=75HONQXAJH</code> 是托管平台的访问门禁，少了它一定打不开（会提示“链接不完整”）。打开成功后再复制地址栏，分享码会被跳掉。
   </div>
 
   <div class="grid">

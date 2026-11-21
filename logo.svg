@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302 140" role="img" aria-label="安语 · 居家养老语音助手">
+  <title>安语 · 居家养老语音助手</title>
+  <defs>
+    <linearGradient id="wmBg" x1="12" y1="12" x2="88" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3C8269"/>
+      <stop offset=".55" stop-color="#2C6653"/>
+      <stop offset="1" stop-color="#1B4537"/>
+    </linearGradient>
+    <linearGradient id="wmGold" x1="0" y1="50" x2="0" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F2D49B"/>
+      <stop offset="1" stop-color="#D9A855"/>
+    </linearGradient>
+    <radialGradient id="wmGlow" cx=".28" cy=".18" r=".8">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 图标 -->
+  <g transform="translate(14 22)">
+    <rect width="96" height="96" rx="27" fill="url(#wmBg)"/>
+    <rect width="96" height="96" rx="27" fill="url(#wmGlow)"/>
+    <path d="M20 43 48 22 76 43" fill="none" stroke="#F6EFE1" stroke-width="5.4"
+          stroke-linecap="round" stroke-linejoin="round" opacity=".96"/>
+    <g stroke-linecap="round" stroke-width="6.6">
+      <path d="M32 58v16" stroke="#F6EFE1" opacity=".78"/>
+      <path d="M48 51v30" stroke="url(#wmGold)"/>
+      <path d="M64 58v16" stroke="#F6EFE1" opacity=".78"/>
+    </g>
+  </g>
+
+  <!-- 字标 -->
+  <text x="132" y="76" font-family="PingFang SC, HarmonyOS Sans SC, Microsoft YaHei, Noto Sans SC, sans-serif"
+        font-size="46" font-weight="600" letter-spacing="6" fill="#1B2725">安语</text>
+  <text x="134" y="104" font-family="PingFang SC, HarmonyOS Sans SC, Microsoft YaHei, Noto Sans SC, sans-serif"
+        font-size="16" font-weight="400" letter-spacing="2.6" fill="#77827D">居家养老语音助手</text>
+</svg>
