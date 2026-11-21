@@ -9,8 +9,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Set the complete online URL through the environment; keep access codes out of source.
-ONLINE_URL = os.environ.get("ANYU_ONLINE_URL", "https://anyu-elder-care.app.workbuddy.host/")
+# 线上地址：默认值带分享码（少了它一定打不开）；换域名/换码改这里，
+# 或用环境变量 ANYU_ONLINE_URL 覆盖，不必动代码。
+ONLINE_URL = os.environ.get("ANYU_ONLINE_URL") or \
+    "https://anyu-elder-care.app.workbuddy.host/?sharecode=75HONQXAJH"
 
 
 def cfg():

@@ -28,7 +28,8 @@ try:
     import net_info            # 线上地址常量集中在这里
 except Exception:              # 上线包里没带这个文件时也不影响启动
     class _NetInfo:
-        ONLINE_URL = os.environ.get("ANYU_ONLINE_URL", "https://anyu-elder-care.app.workbuddy.host/")
+        ONLINE_URL = (os.environ.get("ANYU_ONLINE_URL")
+                      or "https://anyu-elder-care.app.workbuddy.host/?sharecode=75HONQXAJH")
     net_info = _NetInfo()
 import service
 

@@ -1,19 +1,32 @@
-.workbuddy/
-__pycache__/
-**/__pycache__/
-*.py[cod]
-
-app/.tmp_f2/
-
+# ---------- 运行时数据（真实手机号、住址、病历，绝不提交）----------
+app/data/
+app/certs/
 *.db
 *.sqlite
 *.sqlite3
 *.db-journal
 *.sqlite-journal
 
+# ---------- 密钥、证书与本地配置 ----------
 *.key
 *.pem
 *.p12
 *.pfx
+*.cer
 .env
 .env.*
+
+# ---------- 缓存 ----------
+__pycache__/
+**/__pycache__/
+*.py[cod]
+app/.tmp_f2/
+
+# ---------- 本机工作记录 ----------
+.workbuddy/
+output/
+
+# ---------- 上线包、隧道程序、应用标记 ----------
+cloud/
+tools/
+.wbapp_*
